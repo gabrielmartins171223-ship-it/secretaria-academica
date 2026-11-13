@@ -75,3 +75,35 @@ test("dados persistem no armazenamento local após nova leitura", function () {
   assert.equal(storage.api.getRequests().length, 1);
   assert.equal(storage.api.getRequests()[0].status, "PENDENTE");
 });
+
+test("gera solicitações fictícias variadas sempre como pendentes", function () {
+  const storage = createStorage();
+  const result = storage.api.seedDemoRequests();
+  const samples = storage.api.getRequests();
+  assert.equal(result.created, 9);
+  assert.equal(samples.length, 9);
+  assert.ok(samples.every(function (item) { return item.status === "PENDENTE" && item.source === "DEMO"; }));
+  assert.equal(new Set(samples.map(function (item) { return item.demoKey; })).size, 9);
+  assert.ok(new Set(samples.map(function (item) { return item.reason; })).size > 1);
+  assert.ok(new Set(samples.map(function (item) { return item.time; })).size > 1);
+  assert.ok(samples.every(function (item) {
+    const weekday = new Date(item.date + "T12:00:00").getDay();
+    return weekday !== 0 && weekday !== 6;
+  }));
+});
+
+test("gerar exemplos novamente não duplica nem altera solicitações já salvas", function () {
+  const storage = createStorage();
+  const original = storage.api.createRequest(request("2040-01-02", "09:00"));
+  const initialSamples = storage.api.seedDemoRequests();
+  assert.equal(initialSamples.created, 9);
+  const firstSample = storage.api.getRequests().find(function (item) { return item.demoKey === "academic-record"; });
+  storage.api.updateStatus(firstSample.id, "APROVADA");
+  const firstCount = storage.api.getRequests().length;
+  const secondRun = storage.api.seedDemoRequests();
+  const requests = storage.api.getRequests();
+  assert.equal(secondRun.created, 0);
+  assert.equal(requests.length, firstCount);
+  assert.equal(requests.find(function (item) { return item.id === original.id; }).status, "PENDENTE");
+  assert.equal(requests.find(function (item) { return item.id === firstSample.id; }).status, "APROVADA");
+});

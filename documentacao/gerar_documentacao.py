@@ -166,7 +166,8 @@ SECTIONS = [
         "O estado permanece no mesmo perfil após recarga. localStorage não criptografa, não controla acesso e não garante gravações atômicas concorrentes; use somente dados fictícios."
     ], None),
     ("21. Descrição da interface do coordenador", [
-        "O painel mostra indicadores e a agenda mensal, semanal ou diária; permite navegar por períodos e filtrar solicitações. O modal apresenta nome, RA, CPF formatado, curso, data, horário, status e motivo. CPF aparece somente nessa visão, mas não existe autenticação; não use dados reais. Ações são exibidas para pedidos pendentes."
+        "O painel mostra indicadores e a agenda mensal, semanal ou diária; permite navegar por períodos e filtrar solicitações. O botão Gerar exemplos fictícios acrescenta nove solicitações com perfis, cursos, motivos, datas e horários variados, sem substituir registros existentes nem duplicar os exemplos em acionamentos posteriores. Todos os pedidos gerados começam PENDENTES.",
+        "O modal apresenta nome, RA, CPF formatado, curso, data, horário, status e motivo. CPF aparece somente nessa visão, mas não existe autenticação; não use dados reais. Aprovar ou recusar os exemplos no painel atualiza os contadores, o calendário e a disponibilidade, como em qualquer outra solicitação."
     ], None),
     ("22. Descrição da interface do aluno", [
         "A interface contém calendário mensal, disponibilidade, seletor de horário, formulário e consulta. Datas passadas e fins de semana ficam desabilitados; horários pendentes ou aprovados não são oferecidos.",
@@ -174,6 +175,7 @@ SECTIONS = [
         "A confirmação informa que a reunião aguarda aprovação. A consulta exige RA e CPF e retorna data, horário, curso e status, sem repetir nome ou CPF."
     ], None),
     ("23. Fluxo de solicitação e aprovação", [
+        "Demonstração de cenários: na área da coordenação, acionar Gerar exemplos fictícios para criar solicitações pendentes com diferentes motivos acadêmicos, cursos, datas úteis e horários. Em seguida, abrir os detalhes e aprovar ou recusar cada uma; o estado observado no calendário e nos indicadores acompanha a ação.",
         "Estudante: acessar → escolher dia útil futuro → selecionar horário → preencher dados e motivo → enviar → aguardar → consultar resultado.",
         "Coordenação: abrir painel → localizar pedido → ver detalhes → aprovar ou recusar → atualizar status, agenda e disponibilidade."
     ], None),
@@ -210,7 +212,8 @@ SECTIONS = [
         ["Fim", "Calendário, lista e consulta refletem a decisão."]
     ]),
     ("27. Plano de testes", [
-        "Foram combinados cinco testes automatizados de armazenamento e cenários de interface no navegador integrado disponível. A execução observada retornou cinco testes aprovados e nenhum reprovado. Comando: node --test tests\\armazenamento.test.js.",
+        "Foram combinados sete testes automatizados de armazenamento e cenários de interface no navegador integrado disponível. A execução observada retornou sete testes aprovados e nenhum reprovado. Comando: node --test tests\\armazenamento.test.js.",
+        "Na demonstração de dados, foram geradas nove solicitações; todas iniciaram pendentes, duas foram analisadas (uma aprovada e outra recusada), e a geração repetida não criou duplicatas nem alterou estados já decididos.",
         "Os testes de interface foram realizados em 12/11/2026 com dados fictícios. Os registros temporários criados durante a verificação foram removidos."
     ], None),
     ("28. Casos de teste e resultados", [
@@ -228,7 +231,9 @@ SECTIONS = [
         ["CT09", "Alternar mês, semana e dia.", "Renderizar três visões.", "month-grid, week-grid e day-grid observados.", "Aprovado"],
         ["CT10", "Viewport de 390 px.", "Sem rolagem horizontal.", "Documento coube na viewport nas duas áreas.", "Aprovado"],
         ["CT11", "Data passada e fim de semana.", "Impedir seleção.", "Células desabilitadas na inspeção.", "Aprovado"],
-        ["CT12", "Conflito na aprovação.", "Não aprovar reserva conflitante.", "Teste automatizado confirmou erro.", "Aprovado"]
+        ["CT12", "Conflito na aprovação.", "Não aprovar reserva conflitante.", "Teste automatizado confirmou erro.", "Aprovado"],
+        ["CT13", "Gerar exemplos de agenda.", "Criar nove pedidos fictícios pendentes em datas e horários variados.", "Nove pedidos criados; calendário e lista atualizados.", "Aprovado"],
+        ["CT14", "Analisar e gerar novamente.", "Atualizar status sem duplicar exemplos.", "Uma aprovação, uma recusa; nova execução manteve nove pedidos e os estados.", "Aprovado"]
     ]),
     ("29. Resultados esperados", [
         "Espera-se demonstrar o ciclo de vida do agendamento, distinguir pendente de aprovado, manter coerência entre calendário e registros e bloquear conflitos no fluxo local. Nos testes executados, os comportamentos registrados foram observados.",

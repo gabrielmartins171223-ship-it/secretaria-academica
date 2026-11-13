@@ -32,7 +32,10 @@
         <h1>Agenda da coordenação</h1>
         <p>Gerencie solicitações e acompanhe os horários de atendimento.</p>
       </div>
-      <span class="coordinator-avatar" aria-hidden="true">C</span>
+      <div class="coordinator-heading-actions">
+        <button type="button" class="button button-secondary" id="generate-demo-requests">Gerar exemplos fictícios</button>
+        <span class="coordinator-avatar" aria-hidden="true">C</span>
+      </div>
     </section>
 
     <div id="coordinator-message" class="message-banner" role="status" aria-live="polite" hidden></div>
@@ -109,9 +112,9 @@
 
     <section class="panel coordinator-info">
       <div class="info-symbol" aria-hidden="true">i</div>
-      <p><strong>Disponibilidade demonstrativa:</strong> dias úteis, nos horários 09h, 10h, 11h, 14h, 15h e 16h. Solicitações pendentes e aprovadas reservam o intervalo; solicitações recusadas não bloqueiam novos pedidos.</p>
+      <p><strong>Disponibilidade demonstrativa:</strong> dias úteis, nos horários 09h, 10h, 11h, 14h, 15h e 16h. O gerador cria exemplos variados sempre como pendentes. Aprove ou recuse cada pedido para atualizar a situação; pendentes e aprovados reservam o intervalo, recusados liberam.</p>
     </section>
-    <p class="privacy-note">Protótipo acadêmico sem autenticação. Os dados ficam no armazenamento local deste navegador; não é adequado para dados pessoais reais ou uso institucional.</p>
+    <p class="privacy-note">Os exemplos são fictícios e ficam apenas no armazenamento local deste navegador. O gerador pode ser acionado novamente sem duplicar os mesmos exemplos.</p>
   </main>
 
   <dialog id="request-dialog" class="request-dialog" aria-labelledby="dialog-title">

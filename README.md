@@ -26,6 +26,8 @@ O site é estático e usa caminhos relativos, portanto funciona no endereço de 
 - Solicitações pendentes reservam o horário; solicitações aprovadas confirmam-no; recusadas liberam-no.
 - Validação de campos e dígitos verificadores do CPF.
 - Botão **Preencher exemplo fictício** para testar o cadastro sem inserir dados reais; preenche também RA e CPF na consulta de status.
+- No painel da coordenação, **Gerar exemplos fictícios** adiciona nove solicitações com alunos, cursos, motivos, dias e horários variados. Todas começam pendentes; aprovar ou recusar no painel altera a situação.
+- O gerador preserva solicitações existentes e pode ser executado novamente sem duplicar exemplos já criados.
 - Detalhes da reunião em janela modal, com aprovação ou recusa.
 - Consulta de status pelo RA e pelo CPF informado no pedido.
 - Persistência no `localStorage`, inclusive após atualizar a página.

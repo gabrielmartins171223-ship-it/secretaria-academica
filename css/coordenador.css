@@ -1,4 +1,5 @@
 .coordinator-shell { margin-top: 32px; }
+.coordinator-heading-actions { display: flex; align-items: center; gap: 12px; }
 .coordinator-avatar { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid #dce5fa; border-radius: 14px; background: var(--blue-pale); color: var(--blue-dark); font-family: "Segoe UI", Arial, sans-serif; font-weight: 800; }
 .metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; margin-bottom: 18px; }
 .metric-card { position: relative; display: grid; grid-template-columns: 40px 1fr; grid-template-rows: auto auto; align-items: center; column-gap: 12px; min-height: 93px; padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: white; box-shadow: var(--shadow); }
@@ -82,6 +83,7 @@
   .request-list { max-height: 360px; }
 }
 @media (max-width: 760px) {
+  .coordinator-heading-actions { width: 100%; justify-content: space-between; margin-top: 14px; }
   .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .coordinator-calendar-heading { flex-direction: column; }
   .calendar-toolbar { width: 100%; align-items: flex-start; }

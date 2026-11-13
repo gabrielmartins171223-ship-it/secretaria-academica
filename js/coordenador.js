@@ -11,7 +11,7 @@
   const dialog = document.getElementById("request-dialog");
   const dialogContent = document.getElementById("dialog-content");
   const dialogActions = document.getElementById("dialog-actions");
-  const cursor = new Date();
+  let cursor = new Date();
   let view = "month";
 
   function refresh() {
@@ -120,6 +120,25 @@
     const today = new Date();
     cursor.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
     refresh();
+  });
+  document.getElementById("generate-demo-requests").addEventListener("click", function () {
+    window.SecretariaApp.safeRun(message, function () {
+      const result = window.SecretariaStorage.seedDemoRequests();
+      refresh();
+      if (result.created === 0) {
+        window.SecretariaApp.showMessage(message, "Os exemplos fictícios já foram adicionados. Analise os pedidos na lista para atualizar suas situações.", "info");
+        return;
+      }
+      cursor = window.SecretariaApp.fromDateKey(result.firstDate);
+      view = "month";
+      document.querySelectorAll(".view-switch button").forEach(function (button) {
+        const active = button.dataset.view === view;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+      refresh();
+      window.SecretariaApp.showMessage(message, result.created + " exemplos fictícios foram adicionados em datas e horários variados. Todos começam pendentes; aprove ou recuse para mudar a situação.", "success");
+    });
   });
   document.querySelectorAll(".view-switch button").forEach(function (button) {
     button.addEventListener("click", function () {
