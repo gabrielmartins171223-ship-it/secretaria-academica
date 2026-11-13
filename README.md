@@ -26,12 +26,13 @@ O site é estático e usa caminhos relativos, portanto funciona no endereço de 
 - Tema visual branco e laranja, com verde para reuniões aprovadas e vermelho para recusadas.
 - Tela inicial modernizada com ícones SVG de estudante e calendário, cartões interativos com elevação ao passar o mouse e suporte à preferência por movimento reduzido.
 - Áreas de aluno e coordenação com navegação fixa e destacada, painéis refinados, calendários mais legíveis e componentes adaptados para celular.
+- Painel da coordenação com símbolos SVG para indicadores, agenda, cadastro e geração de pedidos.
+- Cadastro manual de pedidos fictícios diretamente na coordenação. Os pedidos começam pendentes e podem ser aprovados ou recusados pela lista.
+- A cada clique, **Gerar exemplos aleatórios** acrescenta nove solicitações com alunos, cursos, motivos, dias e horários variados. Os novos exemplos começam pendentes; pedidos e decisões anteriores são preservados.
 - Seleção de dias úteis futuros e de intervalos de 09h, 10h, 11h, 14h, 15h e 16h.
 - Solicitações pendentes reservam o horário; solicitações aprovadas confirmam-no; recusadas liberam-no.
 - Validação de campos e dígitos verificadores do CPF.
 - Botão **Preencher exemplo fictício** para testar o cadastro sem inserir dados reais; preenche também RA e CPF na consulta de status.
-- No painel da coordenação, **Gerar exemplos fictícios** adiciona nove solicitações com alunos, cursos, motivos, dias e horários variados. Todas começam pendentes; aprovar ou recusar no painel altera a situação.
-- O gerador preserva solicitações existentes e pode ser executado novamente sem duplicar exemplos já criados.
 - Detalhes da reunião em janela modal, com aprovação ou recusa.
 - Consulta de status pelo RA e pelo CPF informado no pedido.
 - Persistência no `localStorage`, inclusive após atualizar a página.

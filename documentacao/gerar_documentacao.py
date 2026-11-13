@@ -156,7 +156,7 @@ SECTIONS = [
         "Os documentos definem idioma, metadados, títulos, navegação, áreas, formulários e regiões acessíveis. Cada página carrega seus estilos e scripts. Formulários usam labels, limites de comprimento e mensagens aria-live; os detalhes administrativos usam dialog."
     ], None),
     ("18. Descrição do funcionamento do CSS", [
-        "As folhas aplicam uma identidade visual branca e laranja, tipografia de sistema, cartões, botões e indicadores. A tela inicial usa cartões com ícones SVG de capelo e calendário, elevação no hover/foco, transições e respeito à preferência do sistema por movimento reduzido. As telas de aluno e coordenação apresentam navegação destacada, painéis refinados, formulários e cartões de solicitação mais legíveis, com adaptação a diferentes larguras. Verde identifica aprovações e vermelho identifica recusas. A grade mensal, as dimensões das células, os destaques de data e os pontos de disponibilidade são componentes compartilhados; eventos clicáveis e modal permanecem específicos da coordenação. Media queries reorganizam painéis em telas menores."
+        "As folhas aplicam uma identidade visual branca e laranja, tipografia de sistema, cartões, botões e indicadores. A tela inicial usa cartões com ícones SVG de capelo e calendário, elevação no hover/foco, transições e respeito à preferência do sistema por movimento reduzido. As telas de aluno e coordenação apresentam navegação destacada, painéis refinados, formulários e cartões de solicitação mais legíveis, com adaptação a diferentes larguras. Indicadores da coordenação incluem símbolos SVG de relógio, aprovação, recusa e calendário. Verde identifica aprovações e vermelho identifica recusas. A grade mensal, as dimensões das células, os destaques de data e os pontos de disponibilidade são componentes compartilhados; eventos clicáveis e modal permanecem específicos da coordenação. Media queries reorganizam painéis em telas menores."
     ], None),
     ("19. Descrição do funcionamento do JavaScript", [
         "Handlers controlam seleção de data/horário, envio e consulta, navegação, filtros, diálogo e análise. Dados inseridos na interface são escapados antes de formar HTML dinâmico. Reservas são revalidadas antes de gravar ou aprovar e erros são apresentados."
@@ -166,8 +166,8 @@ SECTIONS = [
         "O estado permanece no mesmo perfil após recarga. localStorage não criptografa, não controla acesso e não garante gravações atômicas concorrentes; use somente dados fictícios."
     ], None),
     ("21. Descrição da interface do coordenador", [
-        "O painel mostra indicadores e a agenda mensal, semanal ou diária; permite navegar por períodos e filtrar solicitações. O botão Gerar exemplos fictícios acrescenta nove solicitações com perfis, cursos, motivos, datas e horários variados, sem substituir registros existentes nem duplicar os exemplos em acionamentos posteriores. Todos os pedidos gerados começam PENDENTES.",
-        "O modal apresenta nome, RA, CPF formatado, curso, data, horário, status e motivo. CPF aparece somente nessa visão, mas não existe autenticação; não use dados reais. Aprovar ou recusar os exemplos no painel atualiza os contadores, o calendário e a disponibilidade, como em qualquer outra solicitação."
+        "O painel mostra indicadores com símbolos SVG e a agenda mensal, semanal ou diária; permite navegar por períodos e filtrar solicitações. Cada acionamento de Gerar exemplos aleatórios acrescenta nove novos pedidos com perfis, cursos, motivos, datas e horários sorteados, preservando registros e decisões anteriores. Os pedidos gerados começam PENDENTES.",
+        "O formulário Novo pedido fictício permite cadastrar manualmente nome, RA, CPF fictício válido, curso, data útil futura, horário livre e motivo. O pedido começa pendente. O modal de detalhes apresenta esses dados e permite aprovar ou recusar; a coordenação atualiza os contadores, o calendário e a disponibilidade. CPF aparece somente nessa visão, mas não existe autenticação; não use dados reais."
     ], None),
     ("22. Descrição da interface do aluno", [
         "A interface contém calendário mensal, disponibilidade, seletor de horário, formulário e consulta. Datas passadas e fins de semana ficam desabilitados; horários pendentes ou aprovados não são oferecidos.",
@@ -175,7 +175,7 @@ SECTIONS = [
         "A confirmação informa que a reunião aguarda aprovação. A consulta exige RA e CPF e retorna data, horário, curso e status, sem repetir nome ou CPF."
     ], None),
     ("23. Fluxo de solicitação e aprovação", [
-        "Demonstração de cenários: na área da coordenação, acionar Gerar exemplos fictícios para criar solicitações pendentes com diferentes motivos acadêmicos, cursos, datas úteis e horários. Em seguida, abrir os detalhes e aprovar ou recusar cada uma; o estado observado no calendário e nos indicadores acompanha a ação.",
+        "Demonstração de cenários: na área da coordenação, gerar mais de um lote de exemplos aleatórios e verificar que os novos pedidos são acrescentados, começam pendentes e não apagam decisões anteriores. Também é possível adicionar um pedido fictício pelo formulário manual e gerenciá-lo na lista.",
         "Estudante: acessar → escolher dia útil futuro → selecionar horário → preencher dados e motivo → enviar → aguardar → consultar resultado.",
         "Coordenação: abrir painel → localizar pedido → ver detalhes → aprovar ou recusar → atualizar status, agenda e disponibilidade."
     ], None),
@@ -213,7 +213,7 @@ SECTIONS = [
     ]),
     ("27. Plano de testes", [
         "Foram combinados oito testes automatizados para armazenamento e alinhamento do calendário, além de cenários de interface no navegador integrado. A execução observada retornou oito testes aprovados e nenhum reprovado. Comando: node --test tests\\*.test.js.",
-        "Na demonstração de dados, foram geradas nove solicitações; todas iniciaram pendentes, duas foram analisadas (uma aprovada e outra recusada), e a geração repetida não criou duplicatas nem alterou estados já decididos.",
+        "Na demonstração de dados, cada acionamento gerou nove novas solicitações pendentes com combinações variadas de perfis, motivos, datas e horários. Pedidos manuais também iniciam pendentes; aprovações e recusas continuam atualizando disponibilidade e situação sem alterar solicitações anteriores.",
         "Os testes de interface foram realizados em 12/11/2026 com dados fictícios. Os registros temporários criados durante a verificação foram removidos."
     ], None),
     ("28. Casos de teste e resultados", [
@@ -232,9 +232,10 @@ SECTIONS = [
         ["CT10", "Viewport de 390 px.", "Sem rolagem horizontal.", "Documento coube na viewport nas duas áreas.", "Aprovado"],
         ["CT11", "Data passada e fim de semana.", "Impedir seleção.", "Células desabilitadas na inspeção.", "Aprovado"],
         ["CT12", "Conflito na aprovação.", "Não aprovar reserva conflitante.", "Teste automatizado confirmou erro.", "Aprovado"],
-        ["CT13", "Gerar exemplos de agenda.", "Criar nove pedidos fictícios pendentes em datas e horários variados.", "Nove pedidos criados; calendário e lista atualizados.", "Aprovado"],
-        ["CT14", "Analisar e gerar novamente.", "Atualizar status sem duplicar exemplos.", "Uma aprovação, uma recusa; nova execução manteve nove pedidos e os estados.", "Aprovado"],
-        ["CT15", "Comparar calendários mensais.", "Mesmos dias, colunas e ordem semanal nos dois perfis.", "Teste automatizado confirmou grade compartilhada, segunda a domingo.", "Aprovado"]
+        ["CT13", "Gerar exemplos de agenda.", "Criar nove pedidos fictícios pendentes com dados aleatórios.", "Nove pedidos criados; calendário e lista atualizados.", "Aprovado"],
+        ["CT14", "Gerar novo lote após decisões.", "Acrescentar pedidos e preservar aprovações anteriores.", "Novo lote acrescentado; decisão existente preservada.", "Aprovado"],
+        ["CT15", "Comparar calendários mensais.", "Mesmos dias, colunas e ordem semanal nos dois perfis.", "Teste automatizado confirmou grade compartilhada, segunda a domingo.", "Aprovado"],
+        ["CT16", "Cadastrar pedido fictício na coordenação.", "Validar dados, criar pedido pendente e permitir análise.", "Pedido manual adicionado e gerenciado pela lista.", "Aprovado"]
     ]),
     ("29. Resultados esperados", [
         "Espera-se demonstrar o ciclo de vida do agendamento, distinguir pendente de aprovado, manter coerência entre calendário e registros e bloquear conflitos no fluxo local. Nos testes executados, os comportamentos registrados foram observados.",

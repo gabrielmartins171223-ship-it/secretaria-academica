@@ -33,8 +33,24 @@
         <p>Gerencie solicitações e acompanhe os horários de atendimento.</p>
       </div>
       <div class="coordinator-heading-actions">
-        <button type="button" class="button button-secondary" id="generate-demo-requests">Gerar exemplos fictícios</button>
-        <span class="coordinator-avatar" aria-hidden="true">C</span>
+        <button type="button" class="button button-secondary" id="open-manual-request">
+          <svg class="coordinator-action-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Novo pedido fictício
+        </button>
+        <button type="button" class="button button-primary" id="generate-demo-requests">
+          <svg class="coordinator-action-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+            <path d="M20 7v5h-5M4.6 9a7.5 7.5 0 0 1 12.8-2L20 12M4 17v-5h5m10.4 3a7.5 7.5 0 0 1-12.8 2L4 12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Gerar exemplos aleatórios
+        </button>
+        <span class="coordinator-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" focusable="false">
+            <circle cx="12" cy="8" r="3.3" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M5.5 20a6.5 6.5 0 0 1 13 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </span>
       </div>
     </section>
 
@@ -42,22 +58,42 @@
 
     <section class="metrics-grid" aria-label="Resumo das solicitações">
       <article class="metric-card">
-        <span class="metric-icon metric-pending" aria-hidden="true">◷</span>
+        <span class="metric-icon metric-pending" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" focusable="false">
+            <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
         <span class="metric-label">Pendentes</span>
         <strong id="pending-count">0</strong>
       </article>
       <article class="metric-card">
-        <span class="metric-icon metric-approved" aria-hidden="true">✓</span>
+        <span class="metric-icon metric-approved" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" focusable="false">
+            <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/>
+            <path d="m8 12.2 2.6 2.6 5.5-5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
         <span class="metric-label">Aprovadas</span>
         <strong id="approved-count">0</strong>
       </article>
       <article class="metric-card">
-        <span class="metric-icon metric-refused" aria-hidden="true">↗</span>
+        <span class="metric-icon metric-refused" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" focusable="false">
+            <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/>
+            <path d="m9 9 6 6m0-6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </span>
         <span class="metric-label">Recusadas</span>
         <strong id="refused-count">0</strong>
       </article>
       <article class="metric-card availability-card">
-        <span class="metric-icon metric-available" aria-hidden="true">▦</span>
+        <span class="metric-icon metric-available" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" focusable="false">
+            <rect x="4" y="5.5" width="16" height="15" rx="2.2" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M8 3.5v4M16 3.5v4M4 9.5h16M8 13h3m2 0h3m-8 3.5h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </span>
         <span class="metric-label">Horários por dia útil</span>
         <strong>6 <small>intervalos</small></strong>
       </article>
@@ -112,10 +148,60 @@
 
     <section class="panel coordinator-info">
       <div class="info-symbol" aria-hidden="true">i</div>
-      <p><strong>Disponibilidade demonstrativa:</strong> dias úteis, nos horários 09h, 10h, 11h, 14h, 15h e 16h. O gerador cria exemplos variados sempre como pendentes. Aprove ou recuse cada pedido para atualizar a situação; pendentes e aprovados reservam o intervalo, recusados liberam.</p>
+      <p><strong>Disponibilidade demonstrativa:</strong> dias úteis, nos horários 09h, 10h, 11h, 14h, 15h e 16h. Adicione um pedido fictício manualmente ou gere novos exemplos aleatórios; todos começam pendentes para que você aprove ou recuse. Pendentes e aprovados reservam o intervalo; recusados liberam.</p>
     </section>
-    <p class="privacy-note">Os exemplos são fictícios e ficam apenas no armazenamento local deste navegador. O gerador pode ser acionado novamente sem duplicar os mesmos exemplos.</p>
+    <p class="privacy-note">Use somente dados inventados. Os pedidos são salvos no armazenamento local deste navegador; cada geração acrescenta novos exemplos sem remover pedidos ou decisões anteriores.</p>
   </main>
+
+  <dialog id="manual-request-dialog" class="request-dialog manual-request-dialog" aria-labelledby="manual-request-title">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">Cadastro de teste</p>
+        <h2 id="manual-request-title">Novo pedido fictício</h2>
+        <p class="manual-request-note">Preencha dados inventados. O pedido será criado como pendente e poderá ser gerenciado nesta tela.</p>
+      </div>
+      <button type="button" class="icon-button dialog-close" id="close-manual-request" aria-label="Fechar cadastro">×</button>
+    </div>
+    <form id="manual-request-form" novalidate>
+      <div class="manual-form-grid">
+        <label class="manual-form-field manual-full-field">
+          <span>Nome fictício</span>
+          <input name="name" maxlength="120" autocomplete="off" required>
+        </label>
+        <label class="manual-form-field">
+          <span>Registro Acadêmico (RA)</span>
+          <input name="ra" maxlength="30" autocomplete="off" required>
+        </label>
+        <label class="manual-form-field">
+          <span>CPF fictício válido</span>
+          <input name="cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" autocomplete="off" required>
+        </label>
+        <label class="manual-form-field manual-full-field">
+          <span>Curso</span>
+          <input name="course" maxlength="100" autocomplete="off" required>
+        </label>
+        <label class="manual-form-field">
+          <span>Data do atendimento</span>
+          <input id="manual-request-date" type="date" name="date" required>
+        </label>
+        <label class="manual-form-field">
+          <span>Horário</span>
+          <select id="manual-request-time" name="time" required>
+            <option value="">Escolha um horário</option>
+          </select>
+        </label>
+        <label class="manual-form-field manual-full-field">
+          <span>Motivo da reunião</span>
+          <textarea name="reason" rows="3" maxlength="600" required></textarea>
+        </label>
+      </div>
+      <p class="manual-form-footnote">Escolha um dia útil futuro e um horário disponível. A coordenação decide o status depois.</p>
+      <div class="manual-form-actions">
+        <button type="button" class="button button-secondary" id="cancel-manual-request">Cancelar</button>
+        <button type="submit" class="button button-primary">Adicionar pedido</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog id="request-dialog" class="request-dialog" aria-labelledby="dialog-title">
     <div class="dialog-heading">

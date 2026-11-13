@@ -6,9 +6,11 @@ const path = require("node:path");
 const vm = require("node:vm");
 const test = require("node:test");
 
-function createStorage() {
+function createStorage(random) {
   const values = new Map();
   let nextId = 0;
+  const math = Object.create(Math);
+  if (random) math.random = random;
   const localStorage = {
     getItem: function (key) { return values.has(key) ? values.get(key) : null; },
     setItem: function (key, value) { values.set(key, String(value)); }
@@ -16,7 +18,7 @@ function createStorage() {
   const window = {
     crypto: { randomUUID: function () { nextId += 1; return "test-" + nextId; } }
   };
-  const context = vm.createContext({ window: window, localStorage: localStorage, Date: Date, JSON: JSON, Set: Set, Math: Math });
+  const context = vm.createContext({ window: window, localStorage: localStorage, Date: Date, JSON: JSON, Set: Set, Math: math });
   const source = fs.readFileSync(path.join(__dirname, "..", "js", "armazenamento.js"), "utf8");
   vm.runInContext(source, context);
   return { api: window.SecretariaStorage, localStorage: localStorage };
@@ -76,34 +78,44 @@ test("dados persistem no armazenamento local após nova leitura", function () {
   assert.equal(storage.api.getRequests()[0].status, "PENDENTE");
 });
 
-test("gera solicitações fictícias variadas sempre como pendentes", function () {
+test("gera novos pedidos fictícios aleatórios como pendentes", function () {
   const storage = createStorage();
   const result = storage.api.seedDemoRequests();
   const samples = storage.api.getRequests();
   assert.equal(result.created, 9);
   assert.equal(samples.length, 9);
   assert.ok(samples.every(function (item) { return item.status === "PENDENTE" && item.source === "DEMO"; }));
-  assert.equal(new Set(samples.map(function (item) { return item.demoKey; })).size, 9);
-  assert.ok(new Set(samples.map(function (item) { return item.reason; })).size > 1);
+  assert.equal(new Set(samples.map(function (item) { return item.id; })).size, 9);
+  assert.equal(new Set(samples.map(function (item) { return item.ra; })).size, 9);
+  assert.equal(new Set(samples.map(function (item) { return item.reason; })).size, 9);
   assert.ok(new Set(samples.map(function (item) { return item.time; })).size > 1);
+  assert.equal(new Set(samples.map(function (item) { return item.date + " " + item.time; })).size, 9);
   assert.ok(samples.every(function (item) {
     const weekday = new Date(item.date + "T12:00:00").getDay();
     return weekday !== 0 && weekday !== 6;
   }));
 });
 
-test("gerar exemplos novamente não duplica nem altera solicitações já salvas", function () {
-  const storage = createStorage();
+test("cada geração cria novos exemplos e preserva pedidos e decisões existentes", function () {
+  let seed = 123456;
+  const storage = createStorage(function () {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return seed / 4294967296;
+  });
   const original = storage.api.createRequest(request("2040-01-02", "09:00"));
   const initialSamples = storage.api.seedDemoRequests();
   assert.equal(initialSamples.created, 9);
-  const firstSample = storage.api.getRequests().find(function (item) { return item.demoKey === "academic-record"; });
+  const firstSample = storage.api.getRequests().find(function (item) { return item.source === "DEMO"; });
   storage.api.updateStatus(firstSample.id, "APROVADA");
-  const firstCount = storage.api.getRequests().length;
   const secondRun = storage.api.seedDemoRequests();
   const requests = storage.api.getRequests();
-  assert.equal(secondRun.created, 0);
-  assert.equal(requests.length, firstCount);
+  assert.equal(secondRun.created, 9);
+  assert.equal(requests.length, 19);
   assert.equal(requests.find(function (item) { return item.id === original.id; }).status, "PENDENTE");
   assert.equal(requests.find(function (item) { return item.id === firstSample.id; }).status, "APROVADA");
+  assert.equal(requests.filter(function (item) { return item.status === "PENDENTE" && item.source === "DEMO"; }).length, 17);
+  const firstBatch = requests.filter(function (item) { return item.source === "DEMO"; }).slice(0, 9);
+  const secondBatch = requests.filter(function (item) { return item.source === "DEMO"; }).slice(9);
+  assert.notDeepEqual(firstBatch.map(function (item) { return [item.name, item.reason, item.date, item.time]; }),
+    secondBatch.map(function (item) { return [item.name, item.reason, item.date, item.time]; }));
 });

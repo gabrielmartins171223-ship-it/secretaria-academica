@@ -11,8 +11,19 @@
   const dialog = document.getElementById("request-dialog");
   const dialogContent = document.getElementById("dialog-content");
   const dialogActions = document.getElementById("dialog-actions");
+  const manualDialog = document.getElementById("manual-request-dialog");
+  const manualForm = document.getElementById("manual-request-form");
+  const manualDate = document.getElementById("manual-request-date");
+  const manualTime = document.getElementById("manual-request-time");
   let cursor = new Date();
   let view = "month";
+
+  window.SecretariaStorage.slots.forEach(function (time) {
+    const option = document.createElement("option");
+    option.value = time;
+    option.textContent = time;
+    manualTime.appendChild(option);
+  });
 
   function refresh() {
     window.SecretariaApp.safeRun(message, function () {
@@ -104,6 +115,27 @@
     return digits.slice(0, 3) + "." + digits.slice(3, 6) + "." + digits.slice(6, 9) + "-" + digits.slice(9);
   }
 
+  function setView(nextView) {
+    view = nextView;
+    document.querySelectorAll(".view-switch button").forEach(function (button) {
+      const active = button.dataset.view === view;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+  }
+
+  function setCalendarDate(date) {
+    cursor = window.SecretariaApp.fromDateKey(date);
+    setView("month");
+  }
+
+  function formatCpfInput(value) {
+    const digits = window.SecretariaApp.digits(value).slice(0, 11);
+    return digits.replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  }
+
   document.getElementById("coordinator-prev").addEventListener("click", function () {
     if (view === "month") cursor.setMonth(cursor.getMonth() - 1);
     else if (view === "week") cursor.setDate(cursor.getDate() - 7);
@@ -124,30 +156,69 @@
   document.getElementById("generate-demo-requests").addEventListener("click", function () {
     window.SecretariaApp.safeRun(message, function () {
       const result = window.SecretariaStorage.seedDemoRequests();
+      setCalendarDate(result.firstDate);
+      filter.value = "PENDENTE";
       refresh();
-      if (result.created === 0) {
-        window.SecretariaApp.showMessage(message, "Os exemplos fictícios já foram adicionados. Analise os pedidos na lista para atualizar suas situações.", "info");
-        return;
+      window.SecretariaApp.showMessage(message, result.created + " novos exemplos aleatórios foram adicionados. Todos começam pendentes e você pode analisá-los nesta tela.", "success");
+    });
+  });
+  document.getElementById("open-manual-request").addEventListener("click", function () {
+    manualForm.reset();
+    manualDate.min = window.SecretariaApp.localDateKey(new Date());
+    window.SecretariaApp.clearMessage(message);
+    manualDialog.showModal();
+  });
+  document.getElementById("close-manual-request").addEventListener("click", function () { manualDialog.close(); });
+  document.getElementById("cancel-manual-request").addEventListener("click", function () { manualDialog.close(); });
+  manualDialog.addEventListener("click", function (event) {
+    if (event.target === manualDialog) manualDialog.close();
+  });
+  manualForm.elements.cpf.addEventListener("input", function (event) {
+    event.target.value = formatCpfInput(event.target.value);
+  });
+  manualForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    window.SecretariaApp.safeRun(message, function () {
+      const data = new FormData(manualForm);
+      const name = String(data.get("name") || "").trim();
+      const ra = String(data.get("ra") || "").trim();
+      const cpf = window.SecretariaApp.digits(data.get("cpf"));
+      const course = String(data.get("course") || "").trim();
+      const date = String(data.get("date") || "");
+      const time = String(data.get("time") || "");
+      const reason = String(data.get("reason") || "").trim();
+
+      if (!name || !ra || !course || !reason) throw new Error("Preencha todos os campos obrigatórios.");
+      if (!window.SecretariaApp.validCpf(cpf)) throw new Error("Informe um CPF fictício válido.");
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("Informe uma data válida.");
+      const meetingDate = window.SecretariaApp.fromDateKey(date);
+      if (window.SecretariaApp.localDateKey(meetingDate) !== date || !window.SecretariaApp.isBookableDate(meetingDate)) {
+        throw new Error("Escolha um dia útil igual ou posterior à data de hoje.");
       }
-      cursor = window.SecretariaApp.fromDateKey(result.firstDate);
-      view = "month";
-      document.querySelectorAll(".view-switch button").forEach(function (button) {
-        const active = button.dataset.view === view;
-        button.classList.toggle("active", active);
-        button.setAttribute("aria-pressed", String(active));
+      if (!window.SecretariaStorage.slots.includes(time) || !window.SecretariaApp.isTimeAvailableToday(meetingDate, time)) {
+        throw new Error("Escolha um dos horários de atendimento disponíveis.");
+      }
+
+      window.SecretariaStorage.createRequest({
+        name: name,
+        ra: ra,
+        cpf: cpf,
+        course: course,
+        date: date,
+        time: time,
+        reason: reason
       });
+      manualDialog.close();
+      manualForm.reset();
+      setCalendarDate(date);
+      filter.value = "PENDENTE";
       refresh();
-      window.SecretariaApp.showMessage(message, result.created + " exemplos fictícios foram adicionados em datas e horários variados. Todos começam pendentes; aprove ou recuse para mudar a situação.", "success");
+      window.SecretariaApp.showMessage(message, "Pedido fictício adicionado como pendente. Você pode aprová-lo ou recusá-lo pela lista de solicitações.", "success");
     });
   });
   document.querySelectorAll(".view-switch button").forEach(function (button) {
     button.addEventListener("click", function () {
-      view = button.dataset.view;
-      document.querySelectorAll(".view-switch button").forEach(function (item) {
-        const active = item === button;
-        item.classList.toggle("active", active);
-        item.setAttribute("aria-pressed", String(active));
-      });
+      setView(button.dataset.view);
       refresh();
     });
   });

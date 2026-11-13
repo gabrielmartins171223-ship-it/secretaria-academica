@@ -194,3 +194,49 @@
   .coordinator-calendar-panel .calendar-event { padding: 4px 2px; font-size: 8px !important; }
   .request-card { padding: 12px; }
 }
+
+.metric-icon svg { width: 22px; height: 22px; }
+.coordinator-avatar svg { width: 23px; height: 23px; }
+.coordinator-heading-actions .button { min-height: 42px; padding: 0 13px; font-size: 11px; }
+.coordinator-action-icon { width: 16px; height: 16px; flex: 0 0 auto; }
+.manual-request-dialog { width: min(600px, calc(100% - 32px)); max-width: 600px; max-height: 88vh; overflow-y: auto; }
+.manual-request-dialog .dialog-heading { align-items: flex-start; }
+.manual-request-dialog .dialog-heading h2 { margin-bottom: 8px; }
+.manual-request-note { max-width: 460px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.manual-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 12px; }
+.manual-form-field { display: flex; min-width: 0; flex-direction: column; gap: 7px; }
+.manual-form-field > span { color: #48566c; font-size: 11px; font-weight: 700; }
+.manual-form-field input, .manual-form-field select, .manual-form-field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 43px;
+  padding: 9px 11px;
+  border: 1px solid #e9e3dc;
+  border-radius: 10px;
+  background: white;
+  color: var(--ink);
+  font-size: 13px;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+.manual-form-field textarea { min-height: 82px; resize: vertical; }
+.manual-form-field input:focus, .manual-form-field select:focus, .manual-form-field textarea:focus {
+  border-color: #dc9863;
+  box-shadow: 0 0 0 3px rgba(198, 83, 0, .09);
+  outline: 0;
+}
+.manual-full-field { grid-column: 1 / -1; }
+.manual-form-footnote { margin: 13px 0 0; color: #778398; font-size: 11px; line-height: 1.5; }
+.manual-form-actions { display: flex; justify-content: flex-end; gap: 9px; padding-top: 16px; }
+
+@media (max-width: 760px) {
+  .coordinator-heading-actions { flex-wrap: wrap; }
+  .coordinator-heading-actions > .button { flex: 1 1 185px; }
+  .coordinator-avatar { margin-left: auto; }
+}
+@media (max-width: 480px) {
+  .manual-request-dialog { padding: 18px; }
+  .manual-form-grid { grid-template-columns: 1fr; gap: 12px; }
+  .manual-full-field { grid-column: auto; }
+  .manual-form-actions { flex-direction: column-reverse; }
+  .manual-form-actions .button { width: 100%; }
+}

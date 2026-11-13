@@ -5,16 +5,30 @@
   const SLOTS = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
   const ACTIVE_STATUSES = new Set(["PENDENTE", "APROVADA"]);
   const DEMO_REQUESTS = [
-    { demoKey: "academic-record", name: "Ana Oliveira (Fictícia)", ra: "RA-DEMO-001", course: "Administração", reason: "Dúvida sobre aproveitamento de disciplinas cursadas anteriormente.", preferredSlot: 0 },
-    { demoKey: "internship", name: "Bruno Santos (Fictício)", ra: "RA-DEMO-002", course: "Engenharia de Software", reason: "Orientação sobre documentação e horas do estágio supervisionado.", preferredSlot: 2 },
-    { demoKey: "enrollment", name: "Carla Souza (Fictícia)", ra: "RA-DEMO-003", course: "Pedagogia", reason: "Solicitar orientação sobre ajuste de matrícula e pré-requisitos.", preferredSlot: 4 },
-    { demoKey: "course-completion", name: "Diego Lima (Fictício)", ra: "RA-DEMO-004", course: "Ciências Contábeis", reason: "Conferir disciplinas pendentes para a conclusão do curso.", preferredSlot: 5 },
-    { demoKey: "academic-records", name: "Elisa Martins (Fictícia)", ra: "RA-DEMO-005", course: "Psicologia", reason: "Esclarecer emissão de histórico e declaração acadêmica.", preferredSlot: 1 },
-    { demoKey: "class-schedule", name: "Felipe Costa (Fictício)", ra: "RA-DEMO-006", course: "Sistemas de Informação", reason: "Conversar sobre conflito de horários entre disciplinas optativas.", preferredSlot: 3 },
-    { demoKey: "course-transfer", name: "Giovana Alves (Fictícia)", ra: "RA-DEMO-007", course: "Direito", reason: "Orientação sobre equivalência de disciplinas e transferência interna.", preferredSlot: 0 },
-    { demoKey: "scholarship", name: "Henrique Rocha (Fictício)", ra: "RA-DEMO-008", course: "Enfermagem", reason: "Consultar procedimentos acadêmicos relacionados à bolsa estudantil.", preferredSlot: 5 },
-    { demoKey: "graduation", name: "Isabela Ferreira (Fictícia)", ra: "RA-DEMO-009", course: "Arquitetura e Urbanismo", reason: "Tirar dúvidas sobre os requisitos para colação de grau.", preferredSlot: 2 }
+    { name: "Ana Oliveira (Fictícia)", course: "Administração", reason: "Dúvida sobre aproveitamento de disciplinas cursadas anteriormente." },
+    { name: "Bruno Santos (Fictício)", course: "Engenharia de Software", reason: "Orientação sobre documentação e horas do estágio supervisionado." },
+    { name: "Carla Souza (Fictícia)", course: "Pedagogia", reason: "Solicitar orientação sobre ajuste de matrícula e pré-requisitos." },
+    { name: "Diego Lima (Fictício)", course: "Ciências Contábeis", reason: "Conferir disciplinas pendentes para a conclusão do curso." },
+    { name: "Elisa Martins (Fictícia)", course: "Psicologia", reason: "Esclarecer emissão de histórico e declaração acadêmica." },
+    { name: "Felipe Costa (Fictício)", course: "Sistemas de Informação", reason: "Conversar sobre conflito de horários entre disciplinas optativas." },
+    { name: "Giovana Alves (Fictícia)", course: "Direito", reason: "Orientação sobre equivalência de disciplinas e transferência interna." },
+    { name: "Henrique Rocha (Fictício)", course: "Enfermagem", reason: "Consultar procedimentos acadêmicos relacionados à bolsa estudantil." },
+    { name: "Isabela Ferreira (Fictícia)", course: "Arquitetura e Urbanismo", reason: "Tirar dúvidas sobre os requisitos para colação de grau." },
+    { name: "João Martins (Fictício)", course: "Design", reason: "Analisar atividades complementares e aproveitamento de horas." },
+    { name: "Larissa Almeida (Fictícia)", course: "Nutrição", reason: "Solicitar orientação sobre trancamento e retorno ao curso." },
+    { name: "Mateus Ribeiro (Fictício)", course: "Engenharia Civil", reason: "Revisar plano de estudos e dependências acadêmicas." },
+    { name: "Mariana Carvalho (Fictícia)", course: "Medicina Veterinária", reason: "Esclarecer prazos e documentos para atividades de extensão." },
+    { name: "Pedro Nascimento (Fictício)", course: "Jornalismo", reason: "Conversar sobre equivalência curricular após transferência." },
+    { name: "Rafaela Gomes (Fictícia)", course: "Biomedicina", reason: "Revisar pendências acadêmicas e o planejamento do semestre." },
+    { name: "Samuel Ferreira (Fictício)", course: "Educação Física", reason: "Solicitar orientação para estágio e validação das horas." },
+    { name: "Tainá Barbosa (Fictícia)", course: "Letras", reason: "Tirar dúvidas sobre atividades complementares obrigatórias." },
+    { name: "Vitor Mendes (Fictício)", course: "Economia", reason: "Analisar opções para adaptação de horário entre disciplinas." },
+    { name: "Yasmin Cardoso (Fictícia)", course: "Farmácia", reason: "Consultar procedimentos para solicitar revisão de nota." },
+    { name: "Arthur Lopes (Fictício)", course: "Fisioterapia", reason: "Conferir documentação para participação em projeto acadêmico." },
+    { name: "Beatriz Freitas (Fictícia)", course: "Comunicação Social", reason: "Receber orientação sobre intercâmbio e aproveitamento de créditos." },
+    { name: "Caio Azevedo (Fictício)", course: "Engenharia Elétrica", reason: "Planejar matrícula em disciplinas com pré-requisitos." }
   ];
+  const DEMO_REQUEST_COUNT = 9;
 
   function readState() {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -74,64 +88,78 @@
     return request;
   }
 
+  function shuffle(items) {
+    const shuffled = items.slice();
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const target = Math.floor(Math.random() * (index + 1));
+      const current = shuffled[index];
+      shuffled[index] = shuffled[target];
+      shuffled[target] = current;
+    }
+    return shuffled;
+  }
+
   function seedDemoRequests() {
     const state = readState();
-    const existingKeys = new Set(state.requests.map(function (request) { return request.demoKey; }).filter(Boolean));
-    const missing = DEMO_REQUESTS.filter(function (request) { return !existingKeys.has(request.demoKey); });
-    if (missing.length === 0) {
-      return { created: 0, firstDate: "", count: DEMO_REQUESTS.length };
-    }
-
     const requests = state.requests.slice();
+    const candidateSlots = [];
     const date = new Date();
     date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 1);
-    let firstDate = "";
-    let scheduled = 0;
-    let inspectedDays = 0;
-
-    while (scheduled < missing.length && inspectedDays < 90) {
-      const currentDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      date.setDate(date.getDate() + 1);
-      inspectedDays += 1;
+    for (let offset = 0; offset < 180; offset += 1) {
+      const currentDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + offset);
       if (currentDate.getDay() === 0 || currentDate.getDay() === 6) continue;
-
       const dateKey = [
         currentDate.getFullYear(),
         String(currentDate.getMonth() + 1).padStart(2, "0"),
         String(currentDate.getDate()).padStart(2, "0")
       ].join("-");
-      const sample = missing[scheduled];
-      const orderedSlots = SLOTS.slice(sample.preferredSlot).concat(SLOTS.slice(0, sample.preferredSlot));
-      const time = orderedSlots.find(function (slot) {
-        return isAvailable(dateKey, slot, requests);
+      SLOTS.forEach(function (time) {
+        if (isAvailable(dateKey, time, requests) &&
+          (dateKey !== localDateKey(new Date()) || time > currentTime())) {
+          candidateSlots.push({ date: dateKey, time: time });
+        }
       });
-      if (!time) continue;
+    }
 
+    if (candidateSlots.length < DEMO_REQUEST_COUNT) {
+      throw new Error("Não há horários livres suficientes para gerar os exemplos. Tente novamente depois.");
+    }
+
+    const samples = shuffle(DEMO_REQUESTS).slice(0, DEMO_REQUEST_COUNT);
+    const selectedSlots = shuffle(candidateSlots).slice(0, DEMO_REQUEST_COUNT);
+    let firstDate = selectedSlots[0].date;
+    const createdAt = new Date().toISOString();
+    samples.forEach(function (sample, index) {
+      const id = createId();
+      const slot = selectedSlots[index];
+      if (slot.date < firstDate) firstDate = slot.date;
       requests.push({
-        id: "demo-" + sample.demoKey,
-        demoKey: sample.demoKey,
+        id: "demo-" + id,
+        demoKey: "demo-" + id,
         name: sample.name,
-        ra: sample.ra,
+        ra: "RA-DEMO-" + id.replace(/\W/g, "").slice(-8).toUpperCase(),
         cpf: "52998224725",
         course: sample.course,
-        date: dateKey,
-        time: time,
+        date: slot.date,
+        time: slot.time,
         reason: sample.reason,
         status: "PENDENTE",
-        createdAt: new Date().toISOString(),
+        createdAt: createdAt,
         source: "DEMO"
       });
-      if (!firstDate) firstDate = dateKey;
-      scheduled += 1;
-    }
-
-    if (scheduled !== missing.length) {
-      throw new Error("Não foi possível encontrar horários livres suficientes para gerar os exemplos. Tente novamente depois.");
-    }
+    });
 
     saveState(Object.assign({}, state, { requests: requests }));
-    return { created: scheduled, firstDate: firstDate, count: DEMO_REQUESTS.length };
+    return { created: DEMO_REQUEST_COUNT, firstDate: firstDate, count: DEMO_REQUEST_COUNT };
+  }
+
+  function localDateKey(date) {
+    return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-");
+  }
+
+  function currentTime() {
+    const now = new Date();
+    return String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
   }
 
   function updateStatus(id, nextStatus) {
