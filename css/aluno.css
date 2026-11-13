@@ -61,3 +61,77 @@
   .status-results-table { font-size: 10px; }
   .status-results-table th, .status-results-table td { padding: 9px 5px; }
 }
+
+.student-layout { gap: 20px; }
+.calendar-panel, .booking-panel, .status-panel { padding: 25px; }
+.calendar-heading { margin-bottom: 19px; }
+.student-shell .calendar-controls > strong { min-width: 132px; font-size: 14px; }
+.booking-panel { position: relative; overflow: hidden; }
+.booking-panel::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, #f8ad69, var(--orange), #e77a24);
+  content: "";
+}
+.booking-panel .panel-heading { margin-bottom: 19px; }
+.booking-panel .panel-heading h2 { font-size: 21px; }
+.step-number { width: 36px; height: 36px; border-radius: 12px; font-size: 12px; }
+.selected-date {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border: 1px solid #f4e4d5;
+  border-radius: 11px;
+  background: #fff9f3;
+  color: #704b2f;
+  font-size: 13px;
+}
+.demo-data-control { gap: 10px; margin-bottom: 18px; }
+.demo-data-control .button { min-height: 38px; padding: 0 13px; font-size: 11px; }
+.demo-data-control p { font-size: 11px; }
+.field-group { margin-bottom: 20px; }
+.field-label { margin-bottom: 10px; color: #48566c; font-size: 12px; }
+.slot-list { gap: 8px; }
+.slot-button {
+  min-width: 70px;
+  height: 40px;
+  border-color: #ece5de;
+  border-radius: 10px;
+  font-size: 12px;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease;
+}
+.slot-button:hover { transform: translateY(-1px); }
+.form-grid { gap: 14px 12px; }
+.form-field { gap: 7px; }
+.form-field > span { color: #48566c; font-size: 11px; }
+.form-field input, .form-field textarea, .filter-select {
+  border-color: #e9e3dc;
+  border-radius: 10px;
+  font-size: 13px;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+.form-field input { height: 44px; padding: 0 12px; }
+.form-field textarea { min-height: 86px; padding: 11px 12px; }
+.form-field input:focus, .form-field textarea:focus, .filter-select:focus {
+  border-color: #dc9863;
+  box-shadow: 0 0 0 3px rgba(198, 83, 0, .09);
+  outline: 0;
+}
+.submit-button { min-height: 47px; margin-top: 17px; font-size: 13px; }
+.form-footnote { font-size: 11px; }
+.status-panel { margin-top: 21px; }
+.status-panel .panel-heading { margin-bottom: 19px; }
+.status-search { gap: 14px; }
+.status-search .button { min-height: 44px; }
+.status-results-table { margin-top: 20px; font-size: 12px; }
+.status-results-table th, .status-results-table td { padding: 13px 11px; }
+.status-results-table th { font-size: 10px; }
+.status-pill, .request-status { padding: 6px 9px; font-size: 10px; }
+
+@media (max-width: 580px) {
+  .calendar-panel, .booking-panel, .status-panel { padding: 18px; }
+  .student-shell .calendar-controls > strong { min-width: 115px; }
+  .demo-data-control { align-items: flex-start; flex-direction: column; }
+  .status-results-table { font-size: 10px; }
+  .status-results-table th, .status-results-table td { padding: 10px 6px; }
+}

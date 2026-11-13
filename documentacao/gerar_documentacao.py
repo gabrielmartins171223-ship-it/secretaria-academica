@@ -91,7 +91,7 @@ SECTIONS = [
     ], None),
     ("9. Descrição geral do sistema", [
         "A página inicial apresenta a proposta do sistema e duas opções de acesso em cartões interativos: a área do estudante, identificada por um símbolo de capelo acadêmico, e a área da coordenação, identificada por um calendário. Os cartões se elevam ao passar o mouse ou receber foco pelo teclado. O estudante seleciona um dia útil futuro, escolhe um intervalo e informa nome, RA, CPF, curso e motivo. O pedido fica pendente até análise.",
-        "A coordenação consulta indicadores, calendários e lista filtrável. A aprovação confirma a reunião e mantém o intervalo ocupado; a recusa libera o intervalo. Os registros são compartilhados entre páginas no armazenamento local."
+        "A coordenação consulta indicadores, calendários e lista filtrável. A aprovação confirma a reunião e mantém o intervalo ocupado; a recusa libera o intervalo. Os registros são compartilhados entre páginas no armazenamento local. Ambas as áreas usam painéis refinados, navegação destacada e leiaute adaptável a telas menores."
     ], None),
     ("10. Público-alvo", [
         "Estudantes que solicitam atendimento e pessoas responsáveis pela coordenação de curso que organizam e analisam pedidos. A aplicação não valida vínculo institucional nem autentica os perfis."
@@ -156,7 +156,7 @@ SECTIONS = [
         "Os documentos definem idioma, metadados, títulos, navegação, áreas, formulários e regiões acessíveis. Cada página carrega seus estilos e scripts. Formulários usam labels, limites de comprimento e mensagens aria-live; os detalhes administrativos usam dialog."
     ], None),
     ("18. Descrição do funcionamento do CSS", [
-        "As folhas aplicam uma identidade visual branca e laranja, tipografia de sistema, cartões, botões e indicadores. A tela inicial usa cartões com ícones SVG de capelo e calendário, elevação no hover/foco, transições e respeito à preferência do sistema por movimento reduzido. Verde identifica aprovações e vermelho identifica recusas. A grade mensal, as dimensões das células, os destaques de data e os pontos de disponibilidade são componentes compartilhados; eventos clicáveis e modal permanecem específicos da coordenação. Media queries reorganizam painéis em telas menores."
+        "As folhas aplicam uma identidade visual branca e laranja, tipografia de sistema, cartões, botões e indicadores. A tela inicial usa cartões com ícones SVG de capelo e calendário, elevação no hover/foco, transições e respeito à preferência do sistema por movimento reduzido. As telas de aluno e coordenação apresentam navegação destacada, painéis refinados, formulários e cartões de solicitação mais legíveis, com adaptação a diferentes larguras. Verde identifica aprovações e vermelho identifica recusas. A grade mensal, as dimensões das células, os destaques de data e os pontos de disponibilidade são componentes compartilhados; eventos clicáveis e modal permanecem específicos da coordenação. Media queries reorganizam painéis em telas menores."
     ], None),
     ("19. Descrição do funcionamento do JavaScript", [
         "Handlers controlam seleção de data/horário, envio e consulta, navegação, filtros, diálogo e análise. Dados inseridos na interface são escapados antes de formar HTML dinâmico. Reservas são revalidadas antes de gravar ou aprovar e erros são apresentados."

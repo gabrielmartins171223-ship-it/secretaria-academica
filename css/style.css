@@ -188,3 +188,72 @@ h1, h2, h3, .brand { font-family: "Segoe UI", Arial, sans-serif; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, .94);
+  backdrop-filter: blur(14px);
+}
+.top-nav { gap: 5px; }
+.nav-link {
+  height: 38px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  transition: color .18s ease, background .18s ease, border-color .18s ease;
+}
+.nav-link.active {
+  border-color: #f3dfce;
+  border-bottom-color: #f3dfce;
+  background: var(--orange-pale);
+}
+.page-shell { margin-top: 40px; }
+.page-heading { margin-bottom: 30px; }
+.page-heading h1 { font-size: clamp(30px, 3.2vw, 38px); letter-spacing: -1.4px; }
+.page-heading p:not(.eyebrow) { font-size: 14px; }
+.eyebrow { font-size: 10px; letter-spacing: 1.35px; }
+.heading-badge { border-color: #f1dfca; background: #fffaf3; }
+.panel {
+  border-color: #f0e9e2;
+  border-radius: 19px;
+  box-shadow: 0 14px 38px rgba(65, 48, 34, .065);
+}
+.panel-heading h2 { font-size: 19px; letter-spacing: -.55px; }
+.month-grid { gap: 4px; }
+.weekday-label { padding: 12px 4px; color: #788396; font-size: 10px; }
+.calendar-day {
+  min-height: 76px;
+  padding: 8px 5px;
+  border-color: #f0ede8;
+  border-radius: 10px;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+.calendar-day:not(.calendar-day-readonly):hover:not(:disabled) {
+  border-color: #e7ae80;
+  background: #fff9f3;
+  box-shadow: 0 4px 12px rgba(133, 76, 33, .08);
+}
+.calendar-day.outside-month { border-color: transparent; border-radius: 8px; }
+.calendar-day.is-past { border-color: transparent; }
+.calendar-day.is-selected { border-color: var(--orange); border-radius: 10px; }
+.calendar-day.is-today .day-number { background: #fff7ef; }
+.day-number { min-width: 28px; height: 28px; font-size: 12px; }
+.calendar-legend { gap: 19px; padding-top: 17px; font-size: 11px; }
+.icon-button { width: 36px; height: 36px; border-radius: 11px; }
+.button { min-height: 42px; border-radius: 11px; font-size: 12px; }
+.button-secondary { border: 1px solid #f1dfce; }
+.privacy-note { color: #778398; }
+
+@media (max-width: 760px) {
+  .page-shell { margin-top: 30px; }
+  .page-heading { margin-bottom: 23px; }
+  .page-heading h1 { font-size: 30px; }
+  .nav-link { height: 34px; padding: 0 9px; border-radius: 9px; }
+}
+@media (max-width: 580px) {
+  .calendar-day { min-height: 60px; padding: 5px 2px; }
+  .weekday-label { padding: 8px 1px; }
+  .day-number { min-width: 23px; height: 23px; font-size: 10px; }
+}
