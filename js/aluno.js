@@ -12,6 +12,13 @@
   const form = document.getElementById("request-form");
   const statusForm = document.getElementById("status-form");
   const results = document.getElementById("student-requests");
+  const demoData = Object.freeze({
+    name: "Aluno Fictício de Demonstração",
+    ra: "RA-FICTICIO-001",
+    cpf: "52998224725",
+    course: "Curso Fictício de Demonstração",
+    reason: "Reunião de demonstração do protótipo acadêmico."
+  });
   const cursor = new Date();
   cursor.setDate(1);
   let selectedDate = "";
@@ -62,6 +69,17 @@
     refreshCalendar();
   });
 
+  document.getElementById("fill-demo-data").addEventListener("click", function () {
+    form.elements.name.value = demoData.name;
+    form.elements.ra.value = demoData.ra;
+    form.elements.cpf.value = formatCpf(demoData.cpf);
+    form.elements.course.value = demoData.course;
+    form.elements.reason.value = demoData.reason;
+    statusForm.elements.ra.value = demoData.ra;
+    statusForm.elements.cpf.value = formatCpf(demoData.cpf);
+    window.SecretariaApp.showMessage(message, "Exemplo fictício preenchido. Escolha uma data e um horário e envie para testar o fluxo.", "info");
+  });
+
   calendar.addEventListener("click", function (event) {
     const dayButton = event.target.closest("[data-date]");
     if (!dayButton || dayButton.disabled) return;
@@ -89,6 +107,10 @@
     const digits = window.SecretariaApp.digits(event.target.value).slice(0, 11);
     event.target.value = digits.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
   });
+
+  function formatCpf(value) {
+    return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  }
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();

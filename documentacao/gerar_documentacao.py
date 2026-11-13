@@ -170,6 +170,7 @@ SECTIONS = [
     ], None),
     ("22. Descrição da interface do aluno", [
         "A interface contém calendário mensal, disponibilidade, seletor de horário, formulário e consulta. Datas passadas e fins de semana ficam desabilitados; horários pendentes ou aprovados não são oferecidos.",
+        "O botão Preencher exemplo fictício preenche o formulário e os campos de consulta com dados demonstrativos para facilitar a avaliação. O envio continua manual: o estudante ainda escolhe data e horário disponíveis e confirma o pedido. O exemplo não deve ser interpretado como identidade ou CPF real.",
         "A confirmação informa que a reunião aguarda aprovação. A consulta exige RA e CPF e retorna data, horário, curso e status, sem repetir nome ou CPF."
     ], None),
     ("23. Fluxo de solicitação e aprovação", [

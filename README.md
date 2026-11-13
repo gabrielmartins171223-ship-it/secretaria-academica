@@ -25,6 +25,7 @@ O site é estático e usa caminhos relativos, portanto funciona no endereço de 
 - Seleção de dias úteis futuros e de intervalos de 09h, 10h, 11h, 14h, 15h e 16h.
 - Solicitações pendentes reservam o horário; solicitações aprovadas confirmam-no; recusadas liberam-no.
 - Validação de campos e dígitos verificadores do CPF.
+- Botão **Preencher exemplo fictício** para testar o cadastro sem inserir dados reais; preenche também RA e CPF na consulta de status.
 - Detalhes da reunião em janela modal, com aprovação ou recusa.
 - Consulta de status pelo RA e pelo CPF informado no pedido.
 - Persistência no `localStorage`, inclusive após atualizar a página.
