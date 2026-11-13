@@ -26,6 +26,7 @@ O site é estático e usa caminhos relativos, portanto funciona no endereço de 
 - Tema visual branco e laranja, com verde para reuniões aprovadas e vermelho para recusadas.
 - Tela inicial modernizada com ícones SVG de estudante e calendário, cartões interativos com elevação ao passar o mouse e suporte à preferência por movimento reduzido.
 - Áreas de aluno e coordenação com navegação fixa e destacada, painéis refinados, calendários mais legíveis e componentes adaptados para celular.
+- Tela do aluno com símbolos SVG de calendário, horário, estudante, identificação acadêmica, curso, formulário e consulta.
 - Painel da coordenação com símbolos SVG para indicadores, agenda, cadastro e geração de pedidos.
 - Cadastro manual de pedidos fictícios diretamente na coordenação. Os pedidos começam pendentes e podem ser aprovados ou recusados pela lista.
 - A cada clique, **Gerar exemplos aleatórios** acrescenta nove solicitações com alunos, cursos, motivos, dias e horários variados. Os novos exemplos começam pendentes; pedidos e decisões anteriores são preservados.

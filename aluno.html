@@ -42,7 +42,13 @@
         <div class="panel-heading calendar-heading">
           <div>
             <p class="eyebrow">Disponibilidade</p>
-            <h2 id="calendar-title">Selecione uma data</h2>
+            <h2 id="calendar-title" class="student-section-title">
+              <svg class="student-title-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+                <rect x="3.5" y="5" width="17" height="15.5" rx="2.4" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M7.5 3.5v3M16.5 3.5v3M3.5 9h17M7.5 12.5h3m3 0h3m-9 4h3m3 0h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              Selecione uma data
+            </h2>
           </div>
           <div class="calendar-controls" aria-label="Navegação do calendário">
             <button type="button" class="icon-button" id="student-prev-month" aria-label="Mês anterior">‹</button>
@@ -62,17 +68,45 @@
         <div class="panel-heading">
           <div>
             <p class="eyebrow">Nova solicitação</p>
-            <h2 id="booking-title">Seus dados</h2>
+            <h2 id="booking-title" class="student-section-title">
+              <svg class="student-title-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+                <path d="M14 3.5H6.5A1.5 1.5 0 0 0 5 5v14a1.5 1.5 0 0 0 1.5 1.5h12A1.5 1.5 0 0 0 20 19V9.5L14 3.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                <path d="M14 3.5V10h6M8.5 14h7m-7 3h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              Seus dados
+            </h2>
           </div>
-          <span class="step-number">01</span>
+          <span class="step-number" aria-label="Etapa 1">
+            <svg viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+              <path d="M12 4.5v15m4-11.5c0-1.1-.9-2-2-2h-4a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4h-4a2 2 0 0 1-2-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+          </span>
         </div>
-        <p class="selected-date" id="selected-date-label">Selecione uma data no calendário</p>
+        <p class="selected-date">
+          <svg class="student-inline-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+            <rect x="3.5" y="5" width="17" height="15.5" rx="2.4" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M7.5 3.5v3M16.5 3.5v3M3.5 9h17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <span id="selected-date-label">Selecione uma data no calendário</span>
+        </p>
         <div class="demo-data-control">
-          <button type="button" class="button button-secondary" id="fill-demo-data">Preencher exemplo fictício</button>
-          <p>Dados demonstrativos; escolha a data e o horário antes de enviar.</p>
+          <button type="button" class="button button-secondary" id="fill-demo-data">
+            <svg class="student-button-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+              <path d="M14 4H6.5A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V9l-5-5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M14 4v5h5m-10 5h6m-6 3h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+            Preencher exemplo fictício
+          </button>
+          <p><svg class="student-inline-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5m0-8h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Dados demonstrativos; escolha a data e o horário antes de enviar.</p>
         </div>
         <div class="field-group">
-          <span class="field-label">Horários disponíveis</span>
+          <span class="field-label">
+            <svg class="student-label-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Horários disponíveis
+          </span>
           <div id="available-slots" class="slot-list" aria-live="polite">
             <p class="helper-text">Primeiro, escolha um dia útil futuro no calendário.</p>
           </div>
@@ -81,27 +115,33 @@
         <form id="request-form" novalidate>
           <div class="form-grid">
             <label class="form-field full-field">
-              <span>Nome completo</span>
+              <span><svg class="student-label-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><circle cx="12" cy="8" r="3.3" stroke="currentColor" stroke-width="1.7"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> Nome completo</span>
               <input name="name" autocomplete="name" maxlength="120" required>
             </label>
             <label class="form-field">
-              <span>Registro Acadêmico (RA)</span>
+              <span><svg class="student-label-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M9 8h6m-6 4h6m-6 4h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> Registro Acadêmico (RA)</span>
               <input name="ra" autocomplete="off" maxlength="30" required>
             </label>
             <label class="form-field">
-              <span>CPF</span>
+              <span><svg class="student-label-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10h8m-8 4h3m4 0h1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> CPF</span>
               <input name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
             </label>
             <label class="form-field full-field">
-              <span>Curso</span>
+              <span><svg class="student-label-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><path d="m2.8 9.2 9.2-5 9.2 5-9.2 5-9.2-5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M6.5 11.3v4.1c3.4 2.8 7.6 2.8 11 0v-4.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Curso</span>
               <input name="course" autocomplete="organization-title" maxlength="100" required>
             </label>
             <label class="form-field full-field">
-              <span>Motivo da reunião</span>
+              <span><svg class="student-label-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><path d="M14 3.5H6.5A1.5 1.5 0 0 0 5 5v14a1.5 1.5 0 0 0 1.5 1.5h12A1.5 1.5 0 0 0 20 19V9.5L14 3.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 3.5V10h6M8.5 14h7m-7 3h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> Motivo da reunião</span>
               <textarea name="reason" rows="3" maxlength="600" required></textarea>
             </label>
           </div>
-          <button class="button button-primary submit-button" type="submit">Enviar solicitação <span aria-hidden="true">→</span></button>
+          <button class="button button-primary submit-button" type="submit">
+            <svg class="student-button-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+              <path d="m21 3-7.5 18-3.4-7.1L3 10.5 21 3Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="m10.1 13.9 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+            Enviar solicitação
+          </button>
           <p class="form-footnote">Ao enviar, o horário ficará reservado enquanto aguarda a decisão da coordenação.</p>
         </form>
       </aside>
@@ -111,19 +151,30 @@
       <div class="panel-heading">
         <div>
           <p class="eyebrow">Acompanhamento</p>
-          <h2 id="status-title">Consultar minhas solicitações</h2>
+          <h2 id="status-title" class="student-section-title">
+            <svg class="student-title-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+              <path d="M7 4.5h13M7 9.5h13M7 14.5h8M4 4.5h.01M4 9.5h.01M4 14.5h.01M4 19.5h.01M7 19.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            Consultar minhas solicitações
+          </h2>
         </div>
       </div>
       <form id="status-form" class="status-search" novalidate>
         <label class="form-field">
-          <span>RA</span>
+          <span><svg class="student-label-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M9 8h6m-6 4h6m-6 4h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> RA</span>
           <input name="ra" autocomplete="off" required>
         </label>
         <label class="form-field">
-          <span>CPF cadastrado</span>
+          <span><svg class="student-label-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10h8m-8 4h3m4 0h1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> CPF cadastrado</span>
           <input name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
         </label>
-        <button type="submit" class="button button-secondary">Consultar</button>
+        <button type="submit" class="button button-secondary">
+          <svg class="student-button-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m15.5 15.5 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Consultar
+        </button>
       </form>
       <div id="student-requests" class="request-results" aria-live="polite">
         <p class="helper-text">Informe seu RA e CPF para consultar o status. Os dados pessoais não serão exibidos nesta lista.</p>
