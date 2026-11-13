@@ -138,7 +138,6 @@
 
 .student-section-title { display: flex; align-items: center; gap: 9px; }
 .student-title-icon { width: 20px; height: 20px; flex: 0 0 auto; color: var(--orange); }
-.step-number svg { width: 19px; height: 19px; }
 .selected-date { display: flex; align-items: center; gap: 9px; }
 .student-inline-icon { width: 16px; height: 16px; flex: 0 0 auto; color: var(--orange-dark); }
 .demo-data-control .button { gap: 8px; }
