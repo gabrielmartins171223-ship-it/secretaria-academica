@@ -11,6 +11,14 @@ Protótipo acadêmico front-end para solicitar e administrar reuniões entre alu
 
 Não é necessário instalar dependências nem configurar um backend.
 
+## Publicar no GitHub Pages
+
+1. Envie a branch `main` para um repositório GitHub público.
+2. No repositório, abra **Settings → Pages** e selecione **GitHub Actions** como origem de implantação.
+3. O workflow `.github/workflows/pages.yml` publica o site a cada atualização da branch `main`. A URL ficará disponível na página **Settings → Pages** após a conclusão do workflow.
+
+O site é estático e usa caminhos relativos, portanto funciona no endereço de projeto do GitHub Pages.
+
 ## Funcionalidades
 
 - Calendário mensal para alunos e visualizações mensal, semanal e diária para a coordenação.
