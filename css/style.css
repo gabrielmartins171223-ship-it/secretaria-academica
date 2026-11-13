@@ -89,6 +89,19 @@ h1, h2, h3, .brand { font-family: "Segoe UI", Arial, sans-serif; }
 .icon-button:hover { border-color: #c9d6f2; color: var(--blue-dark); background: #f8faff; }
 .calendar-controls { display: inline-flex; align-items: center; gap: 10px; }
 .calendar-controls > strong { min-width: 118px; text-align: center; font-size: 13px; }
+.calendar-grid { width: 100%; }
+.month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.weekday-label { padding: 10px 4px; text-align: center; color: #8b95a6; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .45px; }
+.calendar-day { position: relative; min-width: 0; min-height: 72px; padding: 7px 5px; border: 1px solid #edf0f5; background: white; text-align: center; cursor: default; }
+.calendar-day:not(.calendar-day-readonly):hover:not(:disabled) { z-index: 1; border-color: #d8e2fa; background: #f7f9ff; cursor: pointer; }
+.calendar-day:disabled { cursor: default; }
+.calendar-day.outside-month { color: #c0c6d0; background: #fbfcfe; }
+.calendar-day.is-past { color: #bdc3cc; background: #f8f9fb; }
+.calendar-day.is-today .day-number { border: 1px solid #c8d7fb; color: var(--blue-dark); }
+.calendar-day.is-selected { z-index: 2; background: #eff4ff; box-shadow: inset 0 0 0 1px var(--blue); }
+.day-number { display: inline-grid; min-width: 25px; height: 25px; place-items: center; border-radius: 50%; font-size: 11px; font-weight: 600; }
+.day-indicators { display: flex; justify-content: center; gap: 3px; margin-top: 5px; }
+.day-indicators .legend-dot { width: 5px; height: 5px; }
 .calendar-legend { display: flex; align-items: center; flex-wrap: wrap; gap: 17px; padding-top: 14px; color: var(--muted); font-size: 11px; }
 .calendar-legend span { display: inline-flex; align-items: center; gap: 7px; }
 .legend-dot, .status-dot { display: inline-block; flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; }
@@ -139,6 +152,11 @@ h1, h2, h3, .brand { font-family: "Segoe UI", Arial, sans-serif; }
   .landing-shell { width: calc(100% - 36px); }
   .landing-content { padding: 40px 0 54px; }
   .landing-content h1 { letter-spacing: -1.8px; }
+}
+@media (max-width: 580px) {
+  .calendar-day { min-height: 57px; padding: 4px 2px; }
+  .weekday-label { padding: 8px 1px; font-size: 8px; }
+  .day-number { min-width: 22px; height: 22px; font-size: 10px; }
 }
 @media (max-width: 500px) {
   .topbar { gap: 6px; padding: 0 12px; }

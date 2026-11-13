@@ -156,7 +156,7 @@ SECTIONS = [
         "Os documentos definem idioma, metadados, títulos, navegação, áreas, formulários e regiões acessíveis. Cada página carrega seus estilos e scripts. Formulários usam labels, limites de comprimento e mensagens aria-live; os detalhes administrativos usam dialog."
     ], None),
     ("18. Descrição do funcionamento do CSS", [
-        "As folhas aplicam cores, tipografia de sistema, cartões, botões e indicadores. A folha global define navegação e componentes comuns; as folhas específicas definem grade, campos, lista e modal. Media queries reorganizam painéis em telas menores; status combinam cor e texto."
+        "As folhas aplicam cores, tipografia de sistema, cartões, botões e indicadores. A grade mensal, as dimensões das células, os destaques de data e os pontos de disponibilidade são componentes visuais compartilhados pelos dois perfis; os eventos clicáveis e o modal continuam específicos da coordenação. As folhas específicas definem campos, lista e demais controles. Media queries reorganizam painéis em telas menores."
     ], None),
     ("19. Descrição do funcionamento do JavaScript", [
         "Handlers controlam seleção de data/horário, envio e consulta, navegação, filtros, diálogo e análise. Dados inseridos na interface são escapados antes de formar HTML dinâmico. Reservas são revalidadas antes de gravar ou aprovar e erros são apresentados."
@@ -212,7 +212,7 @@ SECTIONS = [
         ["Fim", "Calendário, lista e consulta refletem a decisão."]
     ]),
     ("27. Plano de testes", [
-        "Foram combinados sete testes automatizados de armazenamento e cenários de interface no navegador integrado disponível. A execução observada retornou sete testes aprovados e nenhum reprovado. Comando: node --test tests\\armazenamento.test.js.",
+        "Foram combinados oito testes automatizados para armazenamento e alinhamento do calendário, além de cenários de interface no navegador integrado. A execução observada retornou oito testes aprovados e nenhum reprovado. Comando: node --test tests\\*.test.js.",
         "Na demonstração de dados, foram geradas nove solicitações; todas iniciaram pendentes, duas foram analisadas (uma aprovada e outra recusada), e a geração repetida não criou duplicatas nem alterou estados já decididos.",
         "Os testes de interface foram realizados em 12/11/2026 com dados fictícios. Os registros temporários criados durante a verificação foram removidos."
     ], None),
@@ -233,7 +233,8 @@ SECTIONS = [
         ["CT11", "Data passada e fim de semana.", "Impedir seleção.", "Células desabilitadas na inspeção.", "Aprovado"],
         ["CT12", "Conflito na aprovação.", "Não aprovar reserva conflitante.", "Teste automatizado confirmou erro.", "Aprovado"],
         ["CT13", "Gerar exemplos de agenda.", "Criar nove pedidos fictícios pendentes em datas e horários variados.", "Nove pedidos criados; calendário e lista atualizados.", "Aprovado"],
-        ["CT14", "Analisar e gerar novamente.", "Atualizar status sem duplicar exemplos.", "Uma aprovação, uma recusa; nova execução manteve nove pedidos e os estados.", "Aprovado"]
+        ["CT14", "Analisar e gerar novamente.", "Atualizar status sem duplicar exemplos.", "Uma aprovação, uma recusa; nova execução manteve nove pedidos e os estados.", "Aprovado"],
+        ["CT15", "Comparar calendários mensais.", "Mesmos dias, colunas e ordem semanal nos dois perfis.", "Teste automatizado confirmou grade compartilhada, segunda a domingo.", "Aprovado"]
     ]),
     ("29. Resultados esperados", [
         "Espera-se demonstrar o ciclo de vida do agendamento, distinguir pendente de aprovado, manter coerência entre calendário e registros e bloquear conflitos no fluxo local. Nos testes executados, os comportamentos registrados foram observados.",

@@ -22,6 +22,7 @@
       const today = key === window.SecretariaApp.localDateKey(now);
       const disabled = settings.selectable && (!window.SecretariaApp.isBookableDate(day));
       const classes = ["calendar-day"];
+      if (!settings.selectable) classes.push("calendar-day-readonly");
       if (!inMonth) classes.push("outside-month");
       if (past) classes.push("is-past");
       if (today) classes.push("is-today");

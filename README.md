@@ -22,6 +22,7 @@ O site é estático e usa caminhos relativos, portanto funciona no endereço de 
 ## Funcionalidades
 
 - Calendário mensal para alunos e visualizações mensal, semanal e diária para a coordenação.
+- A grade mensal dos dois perfis compartilha o mesmo tamanho de células, destaque de data e ordem de dias (segunda a domingo); os compromissos da coordenação permanecem clicáveis.
 - Seleção de dias úteis futuros e de intervalos de 09h, 10h, 11h, 14h, 15h e 16h.
 - Solicitações pendentes reservam o horário; solicitações aprovadas confirmam-no; recusadas liberam-no.
 - Validação de campos e dígitos verificadores do CPF.
@@ -63,10 +64,10 @@ Os intervalos são fixos no protótipo. Uma versão de produção precisaria de 
 
 A documentação acadêmica editável está em `documentacao/documentacao-projeto.docx`. Ela distingue requisitos previstos, funcionalidades implementadas e limitações, e registra os testes executados neste protótipo. Para regenerá-la após editar o conteúdo, execute `python documentacao\gerar_documentacao.py`.
 
-Os testes automatizados das regras de armazenamento usam o runner nativo do Node.js:
+Os testes automatizados das regras de armazenamento e do calendário compartilhado usam o runner nativo do Node.js:
 
 ```powershell
-node --test tests\armazenamento.test.js
+node --test tests\*.test.js
 ```
 
 Também foram exercitados os fluxos de solicitação, aprovação, recusa, consulta, atualização após recarga, navegação e layout móvel no navegador integrado. Os resultados observados estão descritos na documentação.
