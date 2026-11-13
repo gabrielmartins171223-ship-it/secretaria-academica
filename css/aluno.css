@@ -4,7 +4,7 @@
 .student-shell .calendar-controls > strong { min-width: 122px; color: var(--ink); font-size: 13px; }
 .calendar-panel .calendar-legend { padding-top: 13px; }
 .booking-panel .panel-heading { margin-bottom: 16px; }
-.step-number { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 10px; background: var(--blue-pale); color: var(--blue); font-size: 11px; font-weight: 700; }
+.step-number { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 10px; background: var(--orange-pale); color: var(--orange); font-size: 11px; font-weight: 700; }
 .selected-date { margin: 0 0 17px; padding: 10px 12px; border-radius: 9px; background: #f7f9fd; color: #465672; font-size: 12px; font-weight: 600; }
 .demo-data-control { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: -5px 0 15px; }
 .demo-data-control .button { min-height: 34px; padding: 0 11px; font-size: 10px; }
@@ -13,8 +13,8 @@
 .field-label { display: block; margin-bottom: 8px; color: #57647a; font-size: 11px; font-weight: 700; }
 .slot-list { display: flex; min-height: 35px; flex-wrap: wrap; gap: 7px; }
 .slot-button { min-width: 62px; height: 34px; border: 1px solid #dfe5ef; border-radius: 8px; background: white; color: #4b5a72; cursor: pointer; font-size: 11px; font-weight: 600; }
-.slot-button:hover { border-color: #a9bdf1; color: var(--blue-dark); }
-.slot-button.selected { border-color: var(--blue); background: var(--blue); color: white; }
+.slot-button:hover { border-color: #e9b88f; color: var(--orange-dark); }
+.slot-button.selected { border-color: var(--orange); background: var(--orange); color: white; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 10px; }
 .form-field { display: flex; min-width: 0; flex-direction: column; gap: 6px; }
 .form-field > span { color: #57647a; font-size: 10px; font-weight: 700; }

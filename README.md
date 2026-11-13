@@ -23,6 +23,7 @@ O site é estático e usa caminhos relativos, portanto funciona no endereço de 
 
 - Calendário mensal para alunos e visualizações mensal, semanal e diária para a coordenação.
 - A grade mensal dos dois perfis compartilha o mesmo tamanho de células, destaque de data e ordem de dias (segunda a domingo); os compromissos da coordenação permanecem clicáveis.
+- Tema visual branco e laranja, com verde para reuniões aprovadas e vermelho para recusadas.
 - Seleção de dias úteis futuros e de intervalos de 09h, 10h, 11h, 14h, 15h e 16h.
 - Solicitações pendentes reservam o horário; solicitações aprovadas confirmam-no; recusadas liberam-no.
 - Validação de campos e dígitos verificadores do CPF.

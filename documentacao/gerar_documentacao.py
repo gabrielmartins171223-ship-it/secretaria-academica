@@ -156,7 +156,7 @@ SECTIONS = [
         "Os documentos definem idioma, metadados, títulos, navegação, áreas, formulários e regiões acessíveis. Cada página carrega seus estilos e scripts. Formulários usam labels, limites de comprimento e mensagens aria-live; os detalhes administrativos usam dialog."
     ], None),
     ("18. Descrição do funcionamento do CSS", [
-        "As folhas aplicam cores, tipografia de sistema, cartões, botões e indicadores. A grade mensal, as dimensões das células, os destaques de data e os pontos de disponibilidade são componentes visuais compartilhados pelos dois perfis; os eventos clicáveis e o modal continuam específicos da coordenação. As folhas específicas definem campos, lista e demais controles. Media queries reorganizam painéis em telas menores."
+        "As folhas aplicam uma identidade visual branca e laranja, tipografia de sistema, cartões, botões e indicadores. Verde identifica aprovações e vermelho identifica recusas. A grade mensal, as dimensões das células, os destaques de data e os pontos de disponibilidade são componentes compartilhados; eventos clicáveis e modal permanecem específicos da coordenação. Media queries reorganizam painéis em telas menores."
     ], None),
     ("19. Descrição do funcionamento do JavaScript", [
         "Handlers controlam seleção de data/horário, envio e consulta, navegação, filtros, diálogo e análise. Dados inseridos na interface são escapados antes de formar HTML dinâmico. Reservas são revalidadas antes de gravar ou aprovar e erros são apresentados."
