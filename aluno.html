@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Solicite uma reunião com a coordenação do curso.">
+  <title>Área do aluno | Secretaria Acadêmica</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/aluno.css">
+  <script defer src="js/armazenamento.js"></script>
+  <script defer src="js/app.js"></script>
+  <script defer src="js/calendario.js"></script>
+  <script defer src="js/aluno.js"></script>
+</head>
+<body data-page="aluno">
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">SA</span>
+      <span>Secretaria <strong>Acadêmica</strong></span>
+    </a>
+    <nav class="top-nav" aria-label="Navegação principal">
+      <a class="nav-link active" href="aluno.html" aria-current="page">Área do aluno</a>
+      <a class="nav-link" href="coordenador.html">Coordenação</a>
+    </nav>
+    <a class="back-link" href="index.html">← Início</a>
+  </header>
+
+  <main class="page-shell student-shell">
+    <section class="page-heading">
+      <div>
+        <p class="eyebrow">Atendimento acadêmico</p>
+        <h1>Agende uma reunião</h1>
+        <p>Escolha uma data e um horário disponível. Sua reunião só estará confirmada após aprovação da coordenação.</p>
+      </div>
+      <span class="heading-badge"><span class="status-dot pending-dot"></span> Aprovação necessária</span>
+    </section>
+
+    <div id="student-message" class="message-banner" role="status" aria-live="polite" hidden></div>
+
+    <div class="student-layout">
+      <section class="panel calendar-panel" aria-labelledby="calendar-title">
+        <div class="panel-heading calendar-heading">
+          <div>
+            <p class="eyebrow">Disponibilidade</p>
+            <h2 id="calendar-title">Selecione uma data</h2>
+          </div>
+          <div class="calendar-controls" aria-label="Navegação do calendário">
+            <button type="button" class="icon-button" id="student-prev-month" aria-label="Mês anterior">‹</button>
+            <strong id="student-month-label" aria-live="polite"></strong>
+            <button type="button" class="icon-button" id="student-next-month" aria-label="Próximo mês">›</button>
+          </div>
+        </div>
+        <div id="student-calendar" class="calendar-grid month-grid"></div>
+        <div class="calendar-legend">
+          <span><i class="legend-dot available-dot"></i> Disponível</span>
+          <span><i class="legend-dot pending-dot"></i> Pendente ou ocupado</span>
+          <span><i class="legend-dot unavailable-dot"></i> Indisponível</span>
+        </div>
+      </section>
+
+      <aside class="panel booking-panel" aria-labelledby="booking-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Nova solicitação</p>
+            <h2 id="booking-title">Seus dados</h2>
+          </div>
+          <span class="step-number">01</span>
+        </div>
+        <p class="selected-date" id="selected-date-label">Selecione uma data no calendário</p>
+        <div class="field-group">
+          <span class="field-label">Horários disponíveis</span>
+          <div id="available-slots" class="slot-list" aria-live="polite">
+            <p class="helper-text">Primeiro, escolha um dia útil futuro no calendário.</p>
+          </div>
+          <input type="hidden" id="meeting-time" name="time">
+        </div>
+        <form id="request-form" novalidate>
+          <div class="form-grid">
+            <label class="form-field full-field">
+              <span>Nome completo</span>
+              <input name="name" autocomplete="name" maxlength="120" required>
+            </label>
+            <label class="form-field">
+              <span>Registro Acadêmico (RA)</span>
+              <input name="ra" autocomplete="off" maxlength="30" required>
+            </label>
+            <label class="form-field">
+              <span>CPF</span>
+              <input name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
+            </label>
+            <label class="form-field full-field">
+              <span>Curso</span>
+              <input name="course" autocomplete="organization-title" maxlength="100" required>
+            </label>
+            <label class="form-field full-field">
+              <span>Motivo da reunião</span>
+              <textarea name="reason" rows="3" maxlength="600" required></textarea>
+            </label>
+          </div>
+          <button class="button button-primary submit-button" type="submit">Enviar solicitação <span aria-hidden="true">→</span></button>
+          <p class="form-footnote">Ao enviar, o horário ficará reservado enquanto aguarda a decisão da coordenação.</p>
+        </form>
+      </aside>
+    </div>
+
+    <section class="panel status-panel" aria-labelledby="status-title">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Acompanhamento</p>
+          <h2 id="status-title">Consultar minhas solicitações</h2>
+        </div>
+      </div>
+      <form id="status-form" class="status-search" novalidate>
+        <label class="form-field">
+          <span>RA</span>
+          <input name="ra" autocomplete="off" required>
+        </label>
+        <label class="form-field">
+          <span>CPF cadastrado</span>
+          <input name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
+        </label>
+        <button type="submit" class="button button-secondary">Consultar</button>
+      </form>
+      <div id="student-requests" class="request-results" aria-live="polite">
+        <p class="helper-text">Informe seu RA e CPF para consultar o status. Os dados pessoais não serão exibidos nesta lista.</p>
+      </div>
+    </section>
+
+    <p class="privacy-note">Protótipo local para fins acadêmicos. Não utilize dados pessoais reais: o armazenamento do navegador não oferece proteção adequada para uso institucional.</p>
+  </main>
+  <footer class="site-footer"><span>Secretaria Acadêmica</span><a href="index.html">Voltar ao início</a></footer>
+</body>
+</html>

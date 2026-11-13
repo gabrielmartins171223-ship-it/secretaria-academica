@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Painel de agenda e solicitações da coordenação.">
+  <title>Coordenação | Secretaria Acadêmica</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/coordenador.css">
+  <script defer src="js/armazenamento.js"></script>
+  <script defer src="js/app.js"></script>
+  <script defer src="js/calendario.js"></script>
+  <script defer src="js/coordenador.js"></script>
+</head>
+<body data-page="coordenador">
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">SA</span>
+      <span>Secretaria <strong>Acadêmica</strong></span>
+    </a>
+    <nav class="top-nav" aria-label="Navegação principal">
+      <a class="nav-link" href="aluno.html">Área do aluno</a>
+      <a class="nav-link active" href="coordenador.html" aria-current="page">Coordenação</a>
+    </nav>
+    <a class="back-link" href="index.html">← Início</a>
+  </header>
+
+  <main class="page-shell coordinator-shell">
+    <section class="page-heading coordinator-heading">
+      <div>
+        <p class="eyebrow">Painel administrativo</p>
+        <h1>Agenda da coordenação</h1>
+        <p>Gerencie solicitações e acompanhe os horários de atendimento.</p>
+      </div>
+      <span class="coordinator-avatar" aria-hidden="true">C</span>
+    </section>
+
+    <div id="coordinator-message" class="message-banner" role="status" aria-live="polite" hidden></div>
+
+    <section class="metrics-grid" aria-label="Resumo das solicitações">
+      <article class="metric-card">
+        <span class="metric-icon metric-pending" aria-hidden="true">◷</span>
+        <span class="metric-label">Pendentes</span>
+        <strong id="pending-count">0</strong>
+      </article>
+      <article class="metric-card">
+        <span class="metric-icon metric-approved" aria-hidden="true">✓</span>
+        <span class="metric-label">Aprovadas</span>
+        <strong id="approved-count">0</strong>
+      </article>
+      <article class="metric-card">
+        <span class="metric-icon metric-refused" aria-hidden="true">↗</span>
+        <span class="metric-label">Recusadas</span>
+        <strong id="refused-count">0</strong>
+      </article>
+      <article class="metric-card availability-card">
+        <span class="metric-icon metric-available" aria-hidden="true">▦</span>
+        <span class="metric-label">Horários por dia útil</span>
+        <strong>6 <small>intervalos</small></strong>
+      </article>
+    </section>
+
+    <div class="coordinator-layout">
+      <section class="panel coordinator-calendar-panel" aria-labelledby="coordinator-calendar-title">
+        <div class="panel-heading coordinator-calendar-heading">
+          <div>
+            <p class="eyebrow">Agenda</p>
+            <h2 id="coordinator-calendar-title">Compromissos</h2>
+          </div>
+          <div class="calendar-toolbar">
+            <div class="calendar-controls" aria-label="Navegação do calendário">
+              <button type="button" class="icon-button" id="coordinator-prev" aria-label="Período anterior">‹</button>
+              <strong id="coordinator-period-label" aria-live="polite"></strong>
+              <button type="button" class="icon-button" id="coordinator-next" aria-label="Próximo período">›</button>
+              <button type="button" class="button button-today" id="coordinator-today">Hoje</button>
+            </div>
+            <div class="view-switch" role="group" aria-label="Visualização do calendário">
+              <button type="button" data-view="month" class="active" aria-pressed="true">Mês</button>
+              <button type="button" data-view="week" aria-pressed="false">Semana</button>
+              <button type="button" data-view="day" aria-pressed="false">Dia</button>
+            </div>
+          </div>
+        </div>
+        <div id="coordinator-calendar" class="calendar-grid month-grid"></div>
+        <div class="calendar-legend">
+          <span><i class="legend-dot approved-dot"></i> Aprovada</span>
+          <span><i class="legend-dot pending-dot"></i> Pendente</span>
+          <span><i class="legend-dot refused-dot"></i> Recusada</span>
+        </div>
+      </section>
+
+      <aside class="panel requests-panel" aria-labelledby="requests-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Caixa de entrada</p>
+            <h2 id="requests-title">Solicitações</h2>
+          </div>
+          <label class="visually-hidden" for="request-filter">Filtrar solicitações</label>
+          <select id="request-filter" class="filter-select">
+            <option value="all">Todas</option>
+            <option value="PENDENTE">Pendentes</option>
+            <option value="APROVADA">Aprovadas</option>
+            <option value="RECUSADA">Recusadas</option>
+          </select>
+        </div>
+        <div id="request-list" class="request-list" aria-live="polite"></div>
+      </aside>
+    </div>
+
+    <section class="panel coordinator-info">
+      <div class="info-symbol" aria-hidden="true">i</div>
+      <p><strong>Disponibilidade demonstrativa:</strong> dias úteis, nos horários 09h, 10h, 11h, 14h, 15h e 16h. Solicitações pendentes e aprovadas reservam o intervalo; solicitações recusadas não bloqueiam novos pedidos.</p>
+    </section>
+    <p class="privacy-note">Protótipo acadêmico sem autenticação. Os dados ficam no armazenamento local deste navegador; não é adequado para dados pessoais reais ou uso institucional.</p>
+  </main>
+
+  <dialog id="request-dialog" class="request-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">Detalhes do atendimento</p>
+        <h2 id="dialog-title">Solicitação</h2>
+      </div>
+      <button type="button" class="icon-button dialog-close" id="close-dialog" aria-label="Fechar detalhes">×</button>
+    </div>
+    <div id="dialog-content" class="dialog-content"></div>
+    <div id="dialog-actions" class="dialog-actions"></div>
+  </dialog>
+  <footer class="site-footer"><span>Secretaria Acadêmica</span><a href="index.html">Voltar ao início</a></footer>
+</body>
+</html>
