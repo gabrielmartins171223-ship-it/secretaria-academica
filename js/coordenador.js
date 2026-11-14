@@ -7,6 +7,7 @@
   const message = document.getElementById("coordinator-message");
   const periodLabel = document.getElementById("coordinator-period-label");
   const requestList = document.getElementById("request-list");
+  const requestCount = document.getElementById("request-count");
   const filter = document.getElementById("request-filter");
   const dialog = document.getElementById("request-dialog");
   const dialogContent = document.getElementById("dialog-content");
@@ -62,19 +63,37 @@
       const dateOrder = first.date.localeCompare(second.date);
       return dateOrder || first.time.localeCompare(second.time);
     });
+    requestCount.textContent = filtered.length;
+    requestCount.setAttribute("aria-label", filtered.length + (filtered.length === 1 ? " solicitação" : " solicitações"));
     if (!filtered.length) {
-      requestList.innerHTML = '<div class="empty-list">Nenhuma solicitação para este filtro.<br>Os novos pedidos aparecerão aqui.</div>';
+      const emptyMessage = selected === "all" ? "Nenhuma solicitação recebida ainda." : "Nenhuma solicitação neste filtro.";
+      requestList.innerHTML = '<div class="empty-list">' +
+        '<span class="empty-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" focusable="false">' +
+        '<path d="M5 6.5h14A1.5 1.5 0 0 1 20.5 8v10A1.5 1.5 0 0 1 19 19.5H5A1.5 1.5 0 0 1 3.5 18V8A1.5 1.5 0 0 1 5 6.5Z" stroke="currentColor" stroke-width="1.6"/>' +
+        '<path d="m4.5 8 7.5 5 7.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
+        "<strong>" + emptyMessage + "</strong><span>Novos pedidos aparecerão aqui.</span></div>";
       return;
     }
     requestList.innerHTML = filtered.map(function (request) {
       const name = window.SecretariaApp.escapeHtml(request.name);
       const date = window.SecretariaApp.escapeHtml(window.SecretariaApp.formatDate(request.date, { day: "2-digit", month: "short" }));
-      return '<button type="button" class="request-card" data-request-id="' + window.SecretariaApp.escapeHtml(request.id) + '">' +
+      const course = window.SecretariaApp.escapeHtml(request.course);
+      const time = window.SecretariaApp.escapeHtml(request.time);
+      const reason = window.SecretariaApp.escapeHtml(request.reason);
+      const status = window.SecretariaApp.statusClass(request.status);
+      return '<button type="button" class="request-card ' + status + '" data-request-id="' + window.SecretariaApp.escapeHtml(request.id) + '">' +
         '<span class="request-card-heading"><span class="request-card-name">' + name + '</span><span class="request-status ' +
-        window.SecretariaApp.statusClass(request.status) + '">' + window.SecretariaApp.escapeHtml(request.status) + "</span></span>" +
-        '<span class="request-card-meta"><span>' + date + " · " + window.SecretariaApp.escapeHtml(request.time) + "</span>" +
-        "<span>" + window.SecretariaApp.escapeHtml(request.course) + "</span></span>" +
-        '<span class="request-card-reason">' + window.SecretariaApp.escapeHtml(request.reason) + "</span></button>";
+        status + '">' + window.SecretariaApp.escapeHtml(request.status) + "</span></span>" +
+        '<span class="request-card-meta"><span class="request-card-date"><svg viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">' +
+        '<rect x="4" y="5.5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.6"/>' +
+        '<path d="M8 3.5v4M16 3.5v4M4 9.5h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+        "</svg>" + date + '</span><span class="request-card-time"><svg viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">' +
+        '<circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/>' +
+        '<path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+        "</svg>" + time + "</span></span>" +
+        '<span class="request-card-course">' + course + "</span>" +
+        '<span class="request-card-reason"><span class="request-card-reason-label">Motivo</span>' +
+        '<span class="request-card-reason-text">' + reason + "</span></span></button>";
     }).join("");
   }
 

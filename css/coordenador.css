@@ -332,3 +332,106 @@
   .manual-form-actions { flex-direction: column-reverse; }
   .manual-form-actions .button { width: 100%; }
 }
+
+.requests-panel .panel-heading h2 { display: flex; align-items: center; gap: 9px; }
+.request-count {
+  display: inline-grid;
+  min-width: 27px;
+  height: 27px;
+  place-items: center;
+  padding: 0 7px;
+  border: 1px solid #f1dfce;
+  border-radius: 9px;
+  background: var(--orange-pale);
+  color: var(--orange-dark);
+  font-size: 11px;
+  font-weight: 700;
+}
+.request-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: 9px;
+  padding: 15px 13px 13px 16px;
+  border-color: #f0e9e2;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #fff 0%, #fffdfa 100%);
+  box-shadow: 0 4px 14px rgba(65, 48, 34, .04);
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+.request-card::before {
+  position: absolute;
+  z-index: -1;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background: var(--orange);
+  content: "";
+}
+.request-card.status-pendente::before { background: #d99a24; }
+.request-card.status-aprovada::before { background: #32946b; }
+.request-card.status-recusada::before { background: #cd6168; }
+.request-card:hover {
+  transform: translateY(-2px);
+  border-color: #e9bc99;
+  background: #fffaf5;
+  box-shadow: 0 9px 20px rgba(100, 63, 34, .08);
+}
+.request-card-heading { align-items: center; gap: 9px; margin: 0; }
+.request-card-name { flex: 1; min-width: 0; color: #34425a; font-size: 12px; line-height: 1.4; }
+.request-status {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+.request-status::before { width: 6px; height: 6px; display: inline-block; border-radius: 50%; background: currentColor; content: ""; }
+.request-status.status-pendente { border-color: #f4e3b9; background: var(--amber-pale); color: #895b08; }
+.request-status.status-aprovada { border-color: #cfe9da; background: var(--green-pale); color: #176745; }
+.request-status.status-recusada { border-color: #f1d2d1; background: var(--red-pale); color: #973b43; }
+.request-card-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.request-card-date, .request-card-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.request-card-date { background: #fff5ec; color: #805127; }
+.request-card-time { background: #f5f6f9; color: #58667c; }
+.request-card-date svg, .request-card-time svg { width: 13px; height: 13px; flex: 0 0 auto; }
+.request-card-course { overflow: hidden; color: #758197; font-size: 10px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.request-card-reason {
+  display: block;
+  margin: 0;
+  padding: 9px 10px;
+  border: 1px solid #f0eef0;
+  border-radius: 10px;
+  background: #faf9f8;
+  color: #657187;
+  font-size: 10px;
+  line-height: 1.45;
+}
+.request-card-reason-label { display: block; margin-bottom: 4px; color: #8993a3; font-size: 8px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; }
+.request-card-reason-text { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.empty-list {
+  display: grid;
+  min-height: 210px;
+  align-content: center;
+  justify-items: center;
+  gap: 9px;
+  padding: 24px 18px;
+  color: #7b879b;
+  text-align: center;
+}
+.empty-list-icon { width: 46px; height: 46px; display: grid; place-items: center; margin-bottom: 3px; border: 1px solid #f1dfce; border-radius: 15px; background: #fff7ef; color: var(--orange); }
+.empty-list-icon svg { width: 22px; height: 22px; }
+.empty-list strong { color: #46536a; font-size: 12px; }
+.empty-list > span:last-child { font-size: 10px; line-height: 1.5; }
