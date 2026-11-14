@@ -9,7 +9,7 @@ Protótipo acadêmico front-end para solicitar e administrar reuniões entre alu
 3. Escolha **Sou coordenador** para abrir a tela de acesso e, após entrar, revisar, aceitar ou recusar solicitações.
 4. Para simular o fluxo completo, mantenha as duas áreas no mesmo navegador e perfil.
 
-O acesso demonstrativo da coordenação usa o usuário `coodernacao` e a senha `12345678`.
+O acesso demonstrativo da coordenação usa o usuário `coordenação` e a senha `12345678`.
 
 Não é necessário instalar dependências nem configurar um backend.
 

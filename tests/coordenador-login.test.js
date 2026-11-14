@@ -62,7 +62,7 @@ test("login incorreto mantém o painel fechado e informa o erro", function () {
 
 test("credenciais válidas abrem o painel da coordenação", function () {
   const login = createLogin();
-  login.username.value = "  COODERNACAO ";
+  login.username.value = "  COORDENAÇÃO ";
   login.password.value = "12345678";
 
   login.submit();

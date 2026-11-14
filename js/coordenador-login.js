@@ -13,7 +13,7 @@
     const username = form.elements.username.value.trim().toLowerCase();
     const password = form.elements.password.value;
 
-    if (username !== "coodernacao" || password !== "12345678") {
+    if (username !== "coordenação" || password !== "12345678") {
       message.textContent = "Usuário ou senha incorretos. Confira os dados e tente novamente.";
       message.hidden = false;
       form.elements.password.focus();
