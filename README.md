@@ -5,9 +5,11 @@ Protótipo acadêmico front-end para solicitar e administrar reuniões entre alu
 ## Executar
 
 1. Abra `index.html` em um navegador moderno ou sirva a pasta por um servidor estático local.
-2. Escolha **Sou aluno** para enviar e consultar solicitações.
-3. Escolha **Sou coordenador** para revisar, aceitar ou recusar solicitações.
+2. Escolha **Sou aluno** para abrir somente a área do aluno e enviar ou consultar solicitações.
+3. Escolha **Sou coordenador** para abrir a tela de acesso e, após entrar, revisar, aceitar ou recusar solicitações.
 4. Para simular o fluxo completo, mantenha as duas áreas no mesmo navegador e perfil.
+
+O acesso demonstrativo da coordenação usa o usuário `coodernacao` e a senha `12345678`.
 
 Não é necessário instalar dependências nem configurar um backend.
 
@@ -25,7 +27,8 @@ O site é estático e usa caminhos relativos, portanto funciona no endereço de 
 - A grade mensal dos dois perfis compartilha o mesmo tamanho de células, destaque de data e ordem de dias (segunda a domingo); os compromissos da coordenação permanecem clicáveis.
 - Tema visual branco e laranja, com verde para reuniões aprovadas e vermelho para recusadas.
 - Tela inicial modernizada com ícones SVG de estudante e calendário, cartões interativos com elevação ao passar o mouse e suporte à preferência por movimento reduzido.
-- Áreas de aluno e coordenação com navegação fixa e destacada, painéis refinados, calendários mais legíveis e componentes adaptados para celular.
+- Áreas de aluno e coordenação separadas, com navegação mostrando somente o perfil escolhido, painéis refinados, calendários mais legíveis e componentes adaptados para celular.
+- Tela de login demonstrativa para a coordenação, com tema branco e laranja e credenciais predefinidas.
 - Tela do aluno com símbolos SVG de calendário, horário, estudante, identificação acadêmica, curso, formulário e consulta.
 - Painel da coordenação com símbolos SVG para indicadores, agenda, cadastro e geração de pedidos.
 - Cadastro manual de pedidos fictícios diretamente na coordenação. Os pedidos começam pendentes e podem ser aprovados ou recusados pela lista.
@@ -61,7 +64,7 @@ documentacao/
 
 ## Limitações e privacidade
 
-Este projeto é somente uma demonstração. O `localStorage` não é um banco de dados, não sincroniza navegadores ou dispositivos, não fornece autenticação nem controle de acesso e pode ser lido por qualquer pessoa com acesso ao perfil do navegador. Não utilize dados reais de alunos. A validação no navegador não substitui controles de segurança de um sistema institucional.
+Este projeto é somente uma demonstração. A tela de login da coordenação e suas credenciais são implementadas no navegador e não fornecem segurança real: não utilize esse acesso para proteger dados institucionais. O `localStorage` não é um banco de dados, não sincroniza navegadores ou dispositivos e pode ser lido por qualquer pessoa com acesso ao perfil do navegador. Não utilize dados reais de alunos. A validação no navegador não substitui controles de segurança de um sistema institucional.
 
 Os intervalos são fixos no protótipo. Uma versão de produção precisaria de backend com persistência transacional, autenticação, autorização, política de retenção e medidas adequadas à LGPD.
 

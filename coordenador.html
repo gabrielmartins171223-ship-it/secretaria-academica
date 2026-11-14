@@ -10,6 +10,7 @@
   <script defer src="js/armazenamento.js"></script>
   <script defer src="js/app.js"></script>
   <script defer src="js/calendario.js"></script>
+  <script defer src="js/coordenador-login.js"></script>
   <script defer src="js/coordenador.js"></script>
 </head>
 <body data-page="coordenador">
@@ -19,17 +20,44 @@
       <span>Secretaria <strong>Acadêmica</strong></span>
     </a>
     <nav class="top-nav" aria-label="Navegação principal">
-      <a class="nav-link" href="aluno.html">Área do aluno</a>
       <a class="nav-link active" href="coordenador.html" aria-current="page">Coordenação</a>
     </nav>
     <a class="back-link" href="index.html">← Início</a>
   </header>
 
-  <main class="page-shell coordinator-shell">
+  <main id="coordinator-login" class="coordinator-login page-shell">
+    <section class="coordinator-login-card panel" aria-labelledby="coordinator-login-title">
+      <span class="coordinator-login-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" focusable="false">
+          <rect x="4.5" y="10" width="15" height="11" rx="2.5" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          <circle cx="12" cy="14" r="1" fill="currentColor"/>
+        </svg>
+      </span>
+      <p class="eyebrow">Acesso administrativo</p>
+      <h1 id="coordinator-login-title">Bem-vindo à coordenação</h1>
+      <p class="coordinator-login-description">Entre com os dados de acesso para abrir o painel de atendimento.</p>
+      <div id="coordinator-login-message" class="message-banner error" role="alert" aria-live="assertive" hidden></div>
+      <form id="coordinator-login-form" class="coordinator-login-form">
+        <label class="coordinator-login-field">
+          <span>Usuário</span>
+          <input name="username" type="text" autocomplete="username" required>
+        </label>
+        <label class="coordinator-login-field">
+          <span>Senha</span>
+          <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit" class="button button-primary">Entrar na coordenação</button>
+      </form>
+      <a class="coordinator-login-back" href="index.html">← Voltar à escolha de perfil</a>
+    </section>
+  </main>
+
+  <main id="coordinator-dashboard" class="page-shell coordinator-shell" hidden>
     <section class="page-heading coordinator-heading">
       <div>
         <p class="eyebrow">Painel administrativo</p>
-        <h1>Agenda da coordenação</h1>
+        <h1 id="coordinator-page-title" tabindex="-1">Agenda da coordenação</h1>
         <p>Gerencie solicitações e acompanhe os horários de atendimento.</p>
       </div>
       <div class="coordinator-heading-actions">

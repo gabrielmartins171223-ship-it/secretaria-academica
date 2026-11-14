@@ -198,6 +198,61 @@
 .metric-icon svg { width: 22px; height: 22px; }
 .coordinator-avatar svg { width: 23px; height: 23px; }
 .coordinator-heading-actions .button { min-height: 42px; padding: 0 13px; font-size: 11px; }
+
+.coordinator-login {
+  display: grid;
+  min-height: calc(100vh - 135px);
+  place-items: center;
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+.coordinator-login[hidden] { display: none; }
+.coordinator-login-card {
+  width: min(460px, 100%);
+  padding: 38px;
+  border-color: #f0e9e2;
+  border-radius: 22px;
+  box-shadow: 0 20px 55px rgba(65, 48, 34, .09);
+}
+.coordinator-login-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 24px;
+  border: 1px solid #f3ddcb;
+  border-radius: 17px;
+  background: linear-gradient(145deg, #fffaf5, #fff0e2);
+  color: var(--orange-dark);
+}
+.coordinator-login-icon svg { width: 27px; height: 27px; }
+.coordinator-login-card h1 { margin: 0 0 10px; font-size: 27px; letter-spacing: -.8px; }
+.coordinator-login-description { margin: 0 0 24px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.coordinator-login-form { display: grid; gap: 16px; }
+.coordinator-login-field { display: grid; gap: 7px; color: #48566c; font-size: 12px; font-weight: 700; }
+.coordinator-login-field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid #e9e3dc;
+  border-radius: 11px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 14px;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+.coordinator-login-field input:focus { border-color: #dc9863; box-shadow: 0 0 0 3px rgba(198, 83, 0, .09); outline: 0; }
+.coordinator-login-form .button { min-height: 46px; margin-top: 3px; font-size: 13px; }
+.coordinator-login-hint { margin: 18px 0 0; padding: 12px; border: 1px solid #f3e5d7; border-radius: 10px; background: #fffaf5; color: #788397; font-size: 11px; text-align: center; }
+.coordinator-login-hint strong { color: #59677d; }
+.coordinator-login-back { display: inline-block; margin-top: 21px; color: var(--orange-dark); font-size: 12px; font-weight: 600; }
+.coordinator-login-back:hover { text-decoration: underline; }
+
+@media (max-width: 500px) {
+  .coordinator-login { min-height: calc(100vh - 125px); padding-top: 24px; padding-bottom: 30px; }
+  .coordinator-login-card { padding: 27px 22px; border-radius: 18px; }
+  .coordinator-login-card h1 { font-size: 24px; }
+}
 .coordinator-action-icon { width: 16px; height: 16px; flex: 0 0 auto; }
 .manual-request-dialog { width: min(600px, calc(100% - 32px)); max-width: 600px; max-height: 88vh; overflow-y: auto; }
 .manual-request-dialog .dialog-heading { align-items: flex-start; }
