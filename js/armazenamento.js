@@ -33,7 +33,7 @@
   function readState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw === null) {
-      return { version: 1, requests: [] };
+      return { version: 1, requests: [], closures: [] };
     }
 
     let state;
@@ -44,6 +44,10 @@
     }
     if (!state || state.version !== 1 || !Array.isArray(state.requests)) {
       throw new Error("A estrutura dos dados locais não é compatível com esta versão do protótipo.");
+    }
+    if (state.closures === undefined) state.closures = [];
+    if (!Array.isArray(state.closures)) {
+      throw new Error("A estrutura dos dias sem atendimento está inválida.");
     }
     return state;
   }
@@ -60,6 +64,23 @@
     return readState().requests;
   }
 
+  function getClosures() {
+    return readState().closures.map(function (closure) {
+      return Object.assign({}, closure);
+    });
+  }
+
+  function deleteAllData() {
+    const state = readState();
+    const deleted = { requests: state.requests.length, closures: state.closures.length };
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+      throw new Error("Não foi possível apagar os dados salvos neste navegador. Verifique as permissões de armazenamento.");
+    }
+    return deleted;
+  }
+
   function hasActiveReservation(date, time, requests, exceptId) {
     return requests.some(function (request) {
       return request.id !== exceptId &&
@@ -69,12 +90,71 @@
     });
   }
 
-  function isAvailable(date, time, requests) {
-    return !hasActiveReservation(date, time, requests);
+  function isAvailable(date, time, requests, closedDates) {
+    const closures = closedDates === undefined ? readState().closures : closedDates;
+    return !isDateBlocked(date, closures) && !hasActiveReservation(date, time, requests);
+  }
+
+  function isDateBlocked(date, closures) {
+    const entries = closures || readState().closures;
+    return entries.some(function (closure) { return closure.date === date; });
+  }
+
+  function blockDate(date, reason) {
+    validateDateKey(date);
+    const state = readState();
+    if (isDateBlocked(date, state.closures)) {
+      throw new Error("Esta data já está marcada como sem atendimento.");
+    }
+    const activeRequests = state.requests.filter(function (request) {
+      return request.date === date && ACTIVE_STATUSES.has(request.status);
+    });
+    if (activeRequests.length > 0) {
+      throw new Error("Não é possível bloquear esta data enquanto houver solicitações pendentes ou aprovadas. Resolva-as primeiro.");
+    }
+    const note = String(reason || "").trim();
+    if (note.length > 180) {
+      throw new Error("O motivo do bloqueio deve ter no máximo 180 caracteres.");
+    }
+    const closure = {
+      date: date,
+      reason: note,
+      createdAt: new Date().toISOString()
+    };
+    state.closures.push(closure);
+    saveState(state);
+    return Object.assign({}, closure);
+  }
+
+  function unblockDate(date) {
+    const state = readState();
+    const index = state.closures.findIndex(function (closure) { return closure.date === date; });
+    if (index === -1) return false;
+    state.closures.splice(index, 1);
+    saveState(state);
+    return true;
+  }
+
+  function validateDateKey(date) {
+    if (typeof date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      throw new Error("Informe uma data válida para o bloqueio.");
+    }
+    const parsedDate = new Date(Number(date.slice(0, 4)), Number(date.slice(5, 7)) - 1, Number(date.slice(8, 10)));
+    if (localDateKey(parsedDate) !== date) {
+      throw new Error("Informe uma data válida para o bloqueio.");
+    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (parsedDate < today) {
+      throw new Error("A data sem atendimento deve ser hoje ou uma data futura.");
+    }
   }
 
   function createRequest(details) {
     const state = readState();
+    if (isDateBlocked(details.date, state.closures)) {
+      throw new Error("A coordenação não realizará atendimentos nesta data. Escolha outro dia.");
+    }
     if (hasActiveReservation(details.date, details.time, state.requests)) {
       throw new Error("Este horário acabou de ser reservado. Escolha outra opção disponível.");
     }
@@ -114,7 +194,7 @@
         String(currentDate.getDate()).padStart(2, "0")
       ].join("-");
       SLOTS.forEach(function (time) {
-        if (isAvailable(dateKey, time, requests) &&
+        if (isAvailable(dateKey, time, requests, state.closures) &&
           (dateKey !== localDateKey(new Date()) || time > currentTime())) {
           candidateSlots.push({ date: dateKey, time: time });
         }
@@ -177,6 +257,9 @@
     if (nextStatus === "APROVADA" && hasActiveReservation(request.date, request.time, state.requests, request.id)) {
       throw new Error("Não é possível aprovar: este intervalo está reservado por outra solicitação pendente ou aprovada.");
     }
+    if (nextStatus === "APROVADA" && isDateBlocked(request.date, state.closures)) {
+      throw new Error("Não é possível aprovar uma solicitação em uma data sem atendimento.");
+    }
     request.status = nextStatus;
     request.updatedAt = new Date().toISOString();
     saveState(state);
@@ -193,9 +276,14 @@
   window.SecretariaStorage = Object.freeze({
     slots: SLOTS.slice(),
     getRequests: getRequests,
+    getClosures: getClosures,
+    isDateBlocked: isDateBlocked,
     isAvailable: isAvailable,
     createRequest: createRequest,
     seedDemoRequests: seedDemoRequests,
+    blockDate: blockDate,
+    unblockDate: unblockDate,
+    deleteAllData: deleteAllData,
     updateStatus: updateStatus
   });
 }());

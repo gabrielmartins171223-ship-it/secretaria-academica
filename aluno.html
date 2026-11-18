@@ -21,7 +21,12 @@
     <nav class="top-nav" aria-label="Navegação principal">
       <a class="nav-link active" href="aluno.html" aria-current="page">Área do aluno</a>
     </nav>
-    <a class="back-link" href="index.html">← Início</a>
+    <a class="back-link" href="index.html">
+      <svg class="back-link-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+        <path d="M19 12H5m7 7-7-7 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Voltar ao início</span>
+    </a>
   </header>
 
   <main class="page-shell student-shell">
@@ -31,7 +36,6 @@
         <h1>Agende uma reunião</h1>
         <p>Escolha uma data e um horário disponível. Sua reunião só estará confirmada após aprovação da coordenação.</p>
       </div>
-      <span class="heading-badge"><span class="status-dot pending-dot"></span> Aprovação necessária</span>
     </section>
 
     <div id="student-message" class="message-banner" role="status" aria-live="polite" hidden></div>
@@ -90,6 +94,12 @@
               <path d="M14 4v5h5m-10 5h6m-6 3h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
             </svg>
             Preencher exemplo fictício
+          </button>
+          <button type="button" class="button button-danger" id="delete-all-data">
+            <svg class="student-button-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+              <path d="M4.5 7h15m-13.5 0 .8 13h10.4L18 7M9 7V4.5h6V7m-5 3.5v5m4-5v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apagar todos os dados
           </button>
           <p><svg class="student-inline-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5m0-8h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Dados demonstrativos; escolha a data e o horário antes de enviar.</p>
         </div>

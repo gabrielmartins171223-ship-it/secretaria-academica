@@ -2,6 +2,11 @@
 
 Protótipo acadêmico front-end para solicitar e administrar reuniões entre alunos e coordenação. A interface segue a proposta visual de calendário central, inspirada na organização de agendas digitais, sem reproduzir a identidade do Google Agenda.
 
+## Acesso online
+
+- Aplicação: https://gabrielmartins171223-ship-it.github.io/secretaria-academica/
+- Repositório: https://github.com/gabrielmartins171223-ship-it/secretaria-academica
+
 ## Executar
 
 1. Abra `index.html` em um navegador moderno ou sirva a pasta por um servidor estático local.
@@ -25,13 +30,15 @@ O site é estático e usa caminhos relativos, portanto funciona no endereço de 
 
 - Calendário mensal para alunos e visualizações mensal, semanal e diária para a coordenação.
 - A grade mensal dos dois perfis compartilha o mesmo tamanho de células, destaque de data e ordem de dias (segunda a domingo); os compromissos da coordenação permanecem clicáveis.
+- Calendários com destaques de data atual e seleção, foco visível para teclado, nomes completos nos cabeçalhos abreviados e visualização semanal rolável em telas estreitas.
 - Tema visual branco e laranja, com verde para reuniões aprovadas e vermelho para recusadas.
 - Tela inicial modernizada com ícones SVG de estudante e calendário, cartões interativos com elevação ao passar o mouse e suporte à preferência por movimento reduzido.
 - Áreas de aluno e coordenação separadas, com navegação mostrando somente o perfil escolhido, painéis refinados, calendários mais legíveis e componentes adaptados para celular.
 - Tela de login demonstrativa para a coordenação, com tema branco e laranja e credenciais predefinidas.
 - Tela do aluno com símbolos SVG de calendário, horário, estudante, identificação acadêmica, curso, formulário e consulta.
 - Painel da coordenação com símbolos SVG para indicadores, agenda, cadastro e geração de pedidos.
-- Cadastro manual de pedidos fictícios diretamente na coordenação. Os pedidos começam pendentes e podem ser aprovados ou recusados pela lista.
+- Botão **Apagar todos os dados** nas áreas do aluno e da coordenação, com confirmação; remove solicitações e bloqueios de datas e atualiza os calendários.
+- A coordenação pode marcar uma data como sem atendimento, informar o motivo e liberar a data depois. Datas com pedidos pendentes ou aprovados não podem ser bloqueadas; o calendário do aluno impede novos agendamentos nos dias bloqueados.
 - A cada clique, **Gerar exemplos aleatórios** acrescenta nove solicitações com alunos, cursos, motivos, dias e horários variados. Os novos exemplos começam pendentes; pedidos e decisões anteriores são preservados.
 - Seleção de dias úteis futuros e de intervalos de 09h, 10h, 11h, 14h, 15h e 16h.
 - Solicitações pendentes reservam o horário; solicitações aprovadas confirmam-no; recusadas liberam-no.
@@ -64,7 +71,9 @@ documentacao/
 
 ## Limitações e privacidade
 
-Este projeto é somente uma demonstração. A tela de login da coordenação e suas credenciais são implementadas no navegador e não fornecem segurança real: não utilize esse acesso para proteger dados institucionais. O `localStorage` não é um banco de dados, não sincroniza navegadores ou dispositivos e pode ser lido por qualquer pessoa com acesso ao perfil do navegador. Não utilize dados reais de alunos. A validação no navegador não substitui controles de segurança de um sistema institucional.
+Este projeto é somente uma demonstração. A tela de login da coordenação e suas credenciais são implementadas no navegador e não fornecem segurança real: não utilize esse acesso para proteger dados institucionais. O `localStorage` não é um banco de dados, não sincroniza navegadores ou dispositivos e pode ser lido por qualquer pessoa com acesso ao perfil do navegador. Solicitações e datas sem atendimento são armazenadas localmente. Não utilize dados reais de alunos. A validação no navegador não substitui controles de segurança de um sistema institucional.
+
+**Adequação:** apropriado para apresentação acadêmica e testes de fluxo usando dados inventados; não está apto para operação institucional com dados reais de alunos.
 
 Os intervalos são fixos no protótipo. Uma versão de produção precisaria de backend com persistência transacional, autenticação, autorização, política de retenção e medidas adequadas à LGPD.
 

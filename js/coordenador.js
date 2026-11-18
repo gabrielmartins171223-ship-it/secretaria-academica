@@ -12,26 +12,22 @@
   const dialog = document.getElementById("request-dialog");
   const dialogContent = document.getElementById("dialog-content");
   const dialogActions = document.getElementById("dialog-actions");
-  const manualDialog = document.getElementById("manual-request-dialog");
-  const manualForm = document.getElementById("manual-request-form");
-  const manualDate = document.getElementById("manual-request-date");
-  const manualTime = document.getElementById("manual-request-time");
+  const closureDialog = document.getElementById("closure-dialog");
+  const closureForm = document.getElementById("closure-form");
+  const closureDate = document.getElementById("closure-date");
+  const closureList = document.getElementById("closure-list");
+  const closureMessage = document.getElementById("closure-message");
   let cursor = new Date();
   let view = "month";
-
-  window.SecretariaStorage.slots.forEach(function (time) {
-    const option = document.createElement("option");
-    option.value = time;
-    option.textContent = time;
-    manualTime.appendChild(option);
-  });
 
   function refresh() {
     window.SecretariaApp.safeRun(message, function () {
       const requests = window.SecretariaStorage.getRequests();
+      const closedDates = window.SecretariaStorage.getClosures();
       renderMetrics(requests);
-      renderCalendar(requests);
+      renderCalendar(requests, closedDates);
       renderRequestList(requests);
+      renderClosureList(closedDates);
     });
   }
 
@@ -41,7 +37,7 @@
     document.getElementById("refused-count").textContent = requests.filter(function (item) { return item.status === "RECUSADA"; }).length;
   }
 
-  function renderCalendar(requests) {
+  function renderCalendar(requests, closedDates) {
     if (view === "month") {
       periodLabel.textContent = window.SecretariaApp.monthLabel(cursor);
     } else if (view === "day") {
@@ -52,7 +48,28 @@
       periodLabel.textContent = new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "short" }).format(start) + " – " +
         new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "short", year: "numeric" }).format(end);
     }
-    window.SecretariaCalendar.renderPeriod(calendar, cursor, view, requests);
+    window.SecretariaCalendar.renderPeriod(calendar, cursor, view, requests, closedDates);
+  }
+
+  function renderClosureList(closedDates) {
+    const ordered = closedDates.slice().sort(function (first, second) {
+      return first.date.localeCompare(second.date);
+    });
+    if (!ordered.length) {
+      closureList.innerHTML = '<div class="closure-empty"><span class="closure-empty-icon" aria-hidden="true">✓</span>' +
+        "<strong>Nenhuma data bloqueada</strong><span>Quando precisar, marque um dia sem atendimento.</span></div>";
+      return;
+    }
+    closureList.innerHTML = ordered.map(function (closure) {
+      const date = window.SecretariaApp.escapeHtml(window.SecretariaApp.formatDate(closure.date, {
+        weekday: "long", day: "numeric", month: "long", year: "numeric"
+      }));
+      const reason = window.SecretariaApp.escapeHtml(closure.reason || "Motivo não informado");
+      return '<article class="closure-card"><span class="closure-card-icon" aria-hidden="true">×</span>' +
+        '<div class="closure-card-copy"><strong>' + date + "</strong><span>" + reason + "</span></div>" +
+        '<button type="button" class="button button-secondary closure-release" data-unblock-date="' +
+        window.SecretariaApp.escapeHtml(closure.date) + '" aria-label="Liberar ' + date + '">Liberar data</button></article>';
+    }).join("");
   }
 
   function renderRequestList(requests) {
@@ -148,13 +165,6 @@
     setView("month");
   }
 
-  function formatCpfInput(value) {
-    const digits = window.SecretariaApp.digits(value).slice(0, 11);
-    return digits.replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-  }
-
   document.getElementById("coordinator-prev").addEventListener("click", function () {
     if (view === "month") cursor.setMonth(cursor.getMonth() - 1);
     else if (view === "week") cursor.setDate(cursor.getDate() - 7);
@@ -181,58 +191,58 @@
       window.SecretariaApp.showMessage(message, result.created + " novos exemplos aleatórios foram adicionados. Todos começam pendentes e você pode analisá-los nesta tela.", "success");
     });
   });
-  document.getElementById("open-manual-request").addEventListener("click", function () {
-    manualForm.reset();
-    manualDate.min = window.SecretariaApp.localDateKey(new Date());
-    window.SecretariaApp.clearMessage(message);
-    manualDialog.showModal();
-  });
-  document.getElementById("close-manual-request").addEventListener("click", function () { manualDialog.close(); });
-  document.getElementById("cancel-manual-request").addEventListener("click", function () { manualDialog.close(); });
-  manualDialog.addEventListener("click", function (event) {
-    if (event.target === manualDialog) manualDialog.close();
-  });
-  manualForm.elements.cpf.addEventListener("input", function (event) {
-    event.target.value = formatCpfInput(event.target.value);
-  });
-  manualForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+  document.getElementById("delete-all-data").addEventListener("click", function () {
     window.SecretariaApp.safeRun(message, function () {
-      const data = new FormData(manualForm);
-      const name = String(data.get("name") || "").trim();
-      const ra = String(data.get("ra") || "").trim();
-      const cpf = window.SecretariaApp.digits(data.get("cpf"));
-      const course = String(data.get("course") || "").trim();
-      const date = String(data.get("date") || "");
-      const time = String(data.get("time") || "");
-      const reason = String(data.get("reason") || "").trim();
-
-      if (!name || !ra || !course || !reason) throw new Error("Preencha todos os campos obrigatórios.");
-      if (!window.SecretariaApp.validCpf(cpf)) throw new Error("Informe um CPF fictício válido.");
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("Informe uma data válida.");
-      const meetingDate = window.SecretariaApp.fromDateKey(date);
-      if (window.SecretariaApp.localDateKey(meetingDate) !== date || !window.SecretariaApp.isBookableDate(meetingDate)) {
-        throw new Error("Escolha um dia útil igual ou posterior à data de hoje.");
-      }
-      if (!window.SecretariaStorage.slots.includes(time) || !window.SecretariaApp.isTimeAvailableToday(meetingDate, time)) {
-        throw new Error("Escolha um dos horários de atendimento disponíveis.");
-      }
-
-      window.SecretariaStorage.createRequest({
-        name: name,
-        ra: ra,
-        cpf: cpf,
-        course: course,
-        date: date,
-        time: time,
-        reason: reason
-      });
-      manualDialog.close();
-      manualForm.reset();
-      setCalendarDate(date);
-      filter.value = "PENDENTE";
+      const requestCount = window.SecretariaStorage.getRequests().length;
+      const closureCount = window.SecretariaStorage.getClosures().length;
+      if (requestCount + closureCount > 0 && !window.confirm("Apagar todos os dados salvos? Serão removidas " +
+        requestCount + (requestCount === 1 ? " solicitação e " : " solicitações e ") +
+        closureCount + (closureCount === 1 ? " data sem atendimento." : " datas sem atendimento.") +
+        " Esta ação não pode ser desfeita.")) return;
+      const deleted = window.SecretariaStorage.deleteAllData();
       refresh();
-      window.SecretariaApp.showMessage(message, "Pedido fictício adicionado como pendente. Você pode aprová-lo ou recusá-lo pela lista de solicitações.", "success");
+      const didDelete = deleted.requests + deleted.closures > 0;
+      window.SecretariaApp.showMessage(message, didDelete ?
+        "Dados apagados: " + deleted.requests + " solicitações e " + deleted.closures + " datas sem atendimento." :
+        "Os dados já estavam apagados; calendário e lista foram atualizados.", didDelete ? "success" : "info");
+    });
+  });
+  document.getElementById("open-closure-dialog").addEventListener("click", function () {
+    closureForm.reset();
+    closureDate.min = window.SecretariaApp.localDateKey(new Date());
+    window.SecretariaApp.clearMessage(closureMessage);
+    window.SecretariaApp.clearMessage(message);
+    closureDialog.showModal();
+  });
+  document.getElementById("close-closure-dialog").addEventListener("click", function () { closureDialog.close(); });
+  document.getElementById("cancel-closure").addEventListener("click", function () { closureDialog.close(); });
+  closureDialog.addEventListener("click", function (event) {
+    if (event.target === closureDialog) closureDialog.close();
+  });
+  closureForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    window.SecretariaApp.safeRun(closureMessage, function () {
+      const data = new FormData(closureForm);
+      const date = String(data.get("date") || "");
+      const reason = String(data.get("reason") || "").trim();
+      window.SecretariaStorage.blockDate(date, reason);
+      closureDialog.close();
+      closureForm.reset();
+      window.SecretariaApp.clearMessage(closureMessage);
+      setCalendarDate(date);
+      refresh();
+      window.SecretariaApp.showMessage(message, "Data marcada sem atendimento. Os alunos não poderão agendar nesse dia.", "success");
+    });
+  });
+  closureList.addEventListener("click", function (event) {
+    const button = event.target.closest("[data-unblock-date]");
+    if (!button) return;
+    const date = button.dataset.unblockDate;
+    window.SecretariaApp.safeRun(message, function () {
+      if (!window.confirm("Liberar esta data para novos agendamentos?")) return;
+      window.SecretariaStorage.unblockDate(date);
+      refresh();
+      window.SecretariaApp.showMessage(message, "Data liberada para novos agendamentos.", "success");
     });
   });
   document.querySelectorAll(".view-switch button").forEach(function (button) {

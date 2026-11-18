@@ -13,7 +13,8 @@ function createStorage(random) {
   if (random) math.random = random;
   const localStorage = {
     getItem: function (key) { return values.has(key) ? values.get(key) : null; },
-    setItem: function (key, value) { values.set(key, String(value)); }
+    setItem: function (key, value) { values.set(key, String(value)); },
+    removeItem: function (key) { values.delete(key); }
   };
   const window = {
     crypto: { randomUUID: function () { nextId += 1; return "test-" + nextId; } }
@@ -46,6 +47,39 @@ test("solicitação pendente reserva o intervalo e bloqueia pedido duplicado", f
   assert.throws(function () { storage.api.createRequest(request(date, "09:00")); }, /reservado/);
 });
 
+test("data sem atendimento bloqueia novos pedidos e pode ser liberada", function () {
+  const storage = createStorage();
+  const date = "2030-05-13";
+  const created = storage.api.createRequest(request(date, "09:00"));
+
+  assert.throws(function () { storage.api.blockDate(date, "Imprevisto"); }, /pendentes ou aprovadas/);
+  assert.equal(storage.api.getClosures().length, 0);
+
+  storage.api.updateStatus(created.id, "RECUSADA");
+  storage.api.blockDate(date, "Imprevisto");
+  assert.equal(storage.api.isDateBlocked(date), true);
+  assert.equal(storage.api.isAvailable(date, "10:00", storage.api.getRequests()), false);
+  assert.throws(function () { storage.api.createRequest(request(date, "10:00")); }, /não realizará atendimentos/);
+
+  assert.equal(storage.api.unblockDate(date), true);
+  assert.equal(storage.api.isDateBlocked(date), false);
+  assert.equal(storage.api.isAvailable(date, "10:00", storage.api.getRequests()), true);
+});
+
+test("bloqueio valida a data e rejeita datas passadas ou inválidas", function () {
+  const storage = createStorage();
+
+  assert.throws(function () { storage.api.blockDate("2030-02-30", ""); }, /data válida/);
+  assert.throws(function () { storage.api.blockDate("2000-01-01", ""); }, /hoje ou uma data futura/);
+});
+
+test("dados antigos sem a lista de bloqueios continuam compatíveis", function () {
+  const storage = createStorage();
+  storage.localStorage.setItem("secretaria-academica.v1", JSON.stringify({ version: 1, requests: [] }));
+
+  assert.equal(storage.api.getClosures().length, 0);
+});
+
 test("aprovar confirma a solicitação e mantém o intervalo ocupado", function () {
   const storage = createStorage();
   const created = storage.api.createRequest(request("2030-05-07", "10:00"));
@@ -76,6 +110,31 @@ test("dados persistem no armazenamento local após nova leitura", function () {
   storage.api.createRequest(request("2030-05-10", "15:00"));
   assert.equal(storage.api.getRequests().length, 1);
   assert.equal(storage.api.getRequests()[0].status, "PENDENTE");
+});
+
+test("apaga solicitações e bloqueios de datas", function () {
+  const storage = createStorage();
+  storage.api.createRequest(request("2030-05-10", "15:00"));
+  const demoRequest = storage.api.createRequest(Object.assign(request("2030-05-13", "09:00"), { source: "DEMO" }));
+  storage.api.updateStatus(demoRequest.id, "APROVADA");
+  storage.api.blockDate("2030-05-20", "Imprevisto");
+
+  const deleted = storage.api.deleteAllData();
+  assert.equal(deleted.requests, 2);
+  assert.equal(deleted.closures, 1);
+  assert.equal(storage.api.getRequests().length, 0);
+  assert.equal(storage.api.getClosures().length, 0);
+  assert.equal(storage.localStorage.getItem("secretaria-academica.v1"), null);
+  assert.equal(storage.api.isAvailable("2030-05-13", "09:00", storage.api.getRequests()), true);
+});
+
+test("apagar novamente quando não há dados continua seguro", function () {
+  const storage = createStorage();
+
+  const deleted = storage.api.deleteAllData();
+  assert.equal(deleted.requests, 0);
+  assert.equal(deleted.closures, 0);
+  assert.equal(storage.api.getRequests().length, 0);
 });
 
 test("gera novos pedidos fictícios aleatórios como pendentes", function () {

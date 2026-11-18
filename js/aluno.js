@@ -22,26 +22,34 @@
   const cursor = new Date();
   cursor.setDate(1);
   let selectedDate = "";
+  let demoDataSelected = false;
 
   function refreshCalendar() {
     window.SecretariaApp.safeRun(message, function () {
       const requests = window.SecretariaStorage.getRequests();
+      const closedDates = window.SecretariaStorage.getClosures();
       monthLabel.textContent = window.SecretariaApp.monthLabel(cursor);
       window.SecretariaCalendar.renderMonth(calendar, cursor.getFullYear(), cursor.getMonth(), requests, {
         selectable: true,
-        selectedDate: selectedDate
+        selectedDate: selectedDate,
+        closedDates: closedDates
       });
-      renderSlots(requests);
+      renderSlots(requests, closedDates);
     });
   }
 
-  function renderSlots(requests) {
+  function renderSlots(requests, closedDates) {
     if (!selectedDate) return;
     const date = window.SecretariaApp.fromDateKey(selectedDate);
     selectedLabel.textContent = new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(date);
+    if (window.SecretariaStorage.isDateBlocked(selectedDate, closedDates)) {
+      timeInput.value = "";
+      slotsContainer.innerHTML = '<p class="helper-text">A coordenação não realizará atendimentos nesta data. Selecione outro dia.</p>';
+      return;
+    }
     const available = window.SecretariaStorage.slots.filter(function (time) {
       return window.SecretariaApp.isTimeAvailableToday(date, time) &&
-        window.SecretariaStorage.isAvailable(selectedDate, time, requests);
+        window.SecretariaStorage.isAvailable(selectedDate, time, requests, closedDates);
     });
     timeInput.value = "";
     if (available.length === 0) {
@@ -77,7 +85,24 @@
     form.elements.reason.value = demoData.reason;
     statusForm.elements.ra.value = demoData.ra;
     statusForm.elements.cpf.value = formatCpf(demoData.cpf);
+    demoDataSelected = true;
     window.SecretariaApp.showMessage(message, "Exemplo fictício preenchido. Escolha uma data e um horário e envie para testar o fluxo.", "info");
+  });
+  document.getElementById("delete-all-data").addEventListener("click", function () {
+    window.SecretariaApp.safeRun(message, function () {
+      const requestCount = window.SecretariaStorage.getRequests().length;
+      const closureCount = window.SecretariaStorage.getClosures().length;
+      if (requestCount + closureCount > 0 && !window.confirm("Apagar todos os dados salvos? Serão removidas " +
+        requestCount + (requestCount === 1 ? " solicitação e " : " solicitações e ") +
+        closureCount + (closureCount === 1 ? " data sem atendimento." : " datas sem atendimento.") +
+        " Esta ação não pode ser desfeita.")) return;
+      const deleted = window.SecretariaStorage.deleteAllData();
+      refreshAfterStorageChange();
+      const didDelete = deleted.requests + deleted.closures > 0;
+      window.SecretariaApp.showMessage(message, didDelete ?
+        "Dados apagados: " + deleted.requests + " solicitações e " + deleted.closures + " datas sem atendimento." :
+        "Os dados já estavam apagados; calendário e lista foram atualizados.", didDelete ? "success" : "info");
+    });
   });
 
   calendar.addEventListener("click", function (event) {
@@ -125,6 +150,9 @@
 
       if (!selectedDate) throw new Error("Selecione uma data no calendário.");
       const date = window.SecretariaApp.fromDateKey(selectedDate);
+      if (window.SecretariaStorage.isDateBlocked(selectedDate)) {
+        throw new Error("A coordenação não realizará atendimentos nesta data. Selecione outro dia.");
+      }
       if (!window.SecretariaApp.isBookableDate(date) || !window.SecretariaApp.isTimeAvailableToday(date, time)) {
         throw new Error("A data ou o horário escolhido não está mais disponível.");
       }
@@ -132,7 +160,7 @@
       if (!name || !ra || !course || !reason) throw new Error("Preencha todos os campos obrigatórios.");
       if (!window.SecretariaApp.validCpf(cpf)) throw new Error("Informe um CPF válido.");
 
-      window.SecretariaStorage.createRequest({
+      const requestDetails = {
         name: name,
         ra: ra,
         cpf: cpf,
@@ -140,8 +168,11 @@
         date: selectedDate,
         time: time,
         reason: reason
-      });
+      };
+      if (demoDataSelected) requestDetails.source = "DEMO";
+      window.SecretariaStorage.createRequest(requestDetails);
       form.reset();
+      demoDataSelected = false;
       window.SecretariaApp.showMessage(message, "Solicitação enviada. O pedido está aguardando aprovação da coordenação; a reunião ainda não está confirmada.", "success");
       refreshAfterStorageChange();
     });
