@@ -4,7 +4,7 @@ Protótipo acadêmico front-end para solicitar e administrar reuniões entre alu
 
 ## Acesso online
 
-- Aplicação: https://gabrielmartins171223-ship-it.github.io/secretaria-academica/
+- Aplicação: https://gabrielmartins171223-ship-it.github.io/secretaria-academica/?v=2d7e44a
 - Repositório: https://github.com/gabrielmartins171223-ship-it/secretaria-academica
 
 ## Executar
